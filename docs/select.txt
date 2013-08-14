@@ -1,0 +1,17 @@
+[SELECT]
+----seleciona o nome do menu e o nome do usuario da tabela permissao---------------
+SELECT 
+ (SELECT nome FROM menu WHERE idmenu = menu_idmenu ),
+ (SELECT nome FROM usuario WHERE idusuario = usuario_idusuario) 
+ FROM 
+  permissao
+WHERE usuario_idusuario = '1'
+
+----seleciona o nome do menu eo nome setor do usuario da tabela permissao------
+
+SELECT 
+ (SELECT nome FROM menu WHERE idmenu = menu_idmenu ),
+ (SELECT (SELECT nome FROM setor WHERE idsetor = setor_idsetor) FROM usuario WHERE idusuario = usuario_idusuario) 
+ FROM 
+  permissao
+WHERE usuario_idusuario = '1'

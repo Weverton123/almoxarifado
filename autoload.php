@@ -1,0 +1,72 @@
+<?php if(!defined('BASEPATH')) exit('Falha no carregamento do script!');
+
+class autoload{    
+    
+    //Variavel $control serve para armazenar o controle enviado pelo link 
+    //e capturado pelo metodo get
+    private $control;
+   
+    //Variavel $action serve para armazenar a ação em determinado controle enviado pelo link 
+    //e capturado pelo metodo get  
+    private $action;        
+   
+    function __construct() {
+ 
+              $this->getControl();//passo 1
+              $this->getAction();//passo 2
+              $this->getController();//passo 3
+              
+             // echo $this->control.'..'.$this->action;
+             $this->load($this->control, $this->action);//passo 4
+              
+    }
+
+    private function getControl(){//passo 1
+        if(!isset($_SESSION['vals']) && $_REQUEST['action']!='validar'){
+                $_REQUEST['control'] = isset($_REQUEST['control']) ? ($_REQUEST['control']==null ? 'menu':$_REQUEST['control']): 'menu';
+            return $this->control = $_REQUEST['control'];
+        }
+        else  {
+            session_start();
+            $vals = $_SESSION['vals'];
+            $this->control = $vals['control'];
+            $this->action  = $vals['action']; 
+               
+           //session_destroy();
+           
+        }
+        
+    }
+    private function getAction(){//passo 2
+        $_REQUEST['action'] = isset($_REQUEST['action']) ? ($_REQUEST['action']==null ? 'index': $_REQUEST['action']):'index';
+        return $this->action = $_REQUEST['action'];
+    }
+    private function getController(){//passo 3 
+        if(file_exists(BASESYSTEM.'controller.php')){
+            try{require_once (BASESYSTEM.'controller.php');}
+            catch (Exception $ex){echo 'Falha no carregamento da página '.'controller.php';}
+        }
+    }
+    private function load($classe,$action = NULL){//passo 4
+      $action = ($action==null ? 'index': $action);
+        if(file_exists(BASECONTROL.$classe."Control.php")){
+             require_once (BASECONTROL.$classe."Control.php");
+
+            try{
+                 $app = new $classe();
+                 $app->$action();
+             } 
+             catch (Exception $ex){echo 'Falha no carregamento ou algum processo da página '.$classe."Control.php";}
+        } 
+      
+        else {
+            echo utf8_decode("A classe {$classe} não existe! <br> Retornar a página inicial <a href='index.php?action=index'>clique aqui</a>")
+                ;  
+        }
+    }
+
+}//fim da classe
+
+
+
+      
