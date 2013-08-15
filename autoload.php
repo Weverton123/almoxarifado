@@ -11,7 +11,7 @@ class autoload{
     private $action;        
    
     function __construct() {
-      
+ 
               $this->getControl();//passo 1
               $this->getAction();//passo 2
               $this->getController();//passo 3
@@ -23,11 +23,8 @@ class autoload{
 
     private function getControl(){//passo 1
         if(!isset($_SESSION['vals']) && $_REQUEST['action']!='validar'){
-               
-         $_REQUEST['control'] = isset($_REQUEST['control']) ?
-                  ($_REQUEST['control']==null ? 'menu':$_REQUEST['control']): 'menu';
-            
-          return $this->control = $_REQUEST['control'];
+                $_REQUEST['control'] = isset($_REQUEST['control']) ? ($_REQUEST['control']==null ? 'menu':$_REQUEST['control']): 'menu';
+            return $this->control = $_REQUEST['control'];
         }
         else  {
             session_start();
@@ -41,8 +38,7 @@ class autoload{
         
     }
     private function getAction(){//passo 2
-        $_REQUEST['action'] = isset($_REQUEST['action']) ?
-                 ($_REQUEST['action']==null ? 'index': $_REQUEST['action']):'index';
+        $_REQUEST['action'] = isset($_REQUEST['action']) ? ($_REQUEST['action']==null ? 'index': $_REQUEST['action']):'index';
         return $this->action = $_REQUEST['action'];
     }
     private function getController(){//passo 3 

@@ -2,7 +2,7 @@
 
 require_once (BASEMODEL.'conexaoBD.php');
 require_once (BASEMODELCLASS.'usuarioClass.php');
-
+session_start();
 
 class usuarioDAO{
 
@@ -106,15 +106,14 @@ class usuarioDAO{
 		    $usuarioClass->setTipousuario_idtipousuario($row['tipousuario_idtipousuario']);
 		    $usuarioClass->setIdusuario($row['idusuario']);
     	
-                    session_start();           
-                    $_SESSION['logado'] = true;//ativo a sessão para logado
-                    $_SESSION['usuario'] = $usuarioClass;//armazeno os dados do usuario na sessão usuario
+                    //session_start();           
+                    $_SESSION['logado'] = true;
                     
             return TRUE;
        }
        else{ 
             
-         //$_SESSION['logado'] = false;  
+         $_SESSION['logado'] = false;  
         return FALSE;
        
        }
