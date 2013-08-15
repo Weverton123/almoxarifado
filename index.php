@@ -14,7 +14,7 @@
     define('BASECONTROL', 'app/control/');
     define('BASEVIEWINC', BASEVIEW.'includes/');
    
-    //FA
+    //$_SESSION['vals'] serve para armazenar os valores para carregar o menu
     
     
     

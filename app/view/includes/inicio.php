@@ -11,12 +11,12 @@ function verifica(){
          if(isset($_REQUEST['username']) && isset($_REQUEST['password']) ? ($_REQUEST['username']== NULL ||$_REQUEST['password']==NULL
              ? FALSE :TRUE):FALSE){ 
              
-                $control = 'login';
-                $action = 'verificar';
-                $user  = $_REQUEST['username'];
-                $senha = $_REQUEST['password']; 
+                $control = 'login';//controle no qual tem os metodos para login
+                $action = 'verificar';//ação na qual realiza a verificação e validação do usuario
+                $user  = $_REQUEST['username'];//valor passado na requisição pelo formulario de login
+                $senha = $_REQUEST['password'];//valor passado na requisição pelo formulario de login 
                
-                $_SESSION['vals'] = array(  'control'=>$control,
+                    $_SESSION['vals'] = array(  'control'=>$control,
                                             'action'=>$action,
                                             'user'=>$user,
                                             'senha'=>$senha
