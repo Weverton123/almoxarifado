@@ -1,5 +1,45 @@
 <?php
 
+/*
+ * LISTAGEM DE MENUS DE ACORDO COM AS PERMISSÕES
+ * 
+session_start();
+if(file_exists('../app/model/conexaoBD.php')){
+    require_once '../app/model/conexaoBD.php';
+    require_once '../app/model/class/usuarioClass.php';
+    require_once '../app/model/dao/usuarioDAO.php';
+    require_once '../app/model/class/menuClass.php'; 
+    require_once '../app/model/dao/menuDAO.php'; 
+    require_once '../app/model/class/permissaoClass.php'; 
+    require_once '../app/model/dao/permissaoDAO.php'; 
+    
+    $usu = new usuarioDAO();
+    $ret = $usu->VerificaUsu('admin', '123');
+    if($ret){
+       $perm = new permissaoDAO();
+       $menu = new menuDAO();
+       $ret2 = $perm->ObterPorPK($ret->getIdusuario());
+       $lista_menu = array();
+       $i=0;
+       foreach ($ret2 as $ln){
+            $lista_menu[$i] = $menu->ObterPorPK($ln->getMenu_idmenu());
+            $i++;
+       }
+       foreach ($lista_menu as $list){
+           echo $list->getNome().' ';
+       }
+    }
+    else{
+        echo 'usuario invalido!';
+    }
+}
+ else {
+    echo 'arquivo de conexao nao encontrado';
+}
+ * FIM DA LISTAGEM DE MENUS DE ACORDO COM AS PERMISSÕES
+ */
+
+/*
 if(file_exists('../app/model/dao/usuarioDAO.php')){
 
     require_once ('../app/model/conexaoBD.php');
@@ -18,7 +58,7 @@ if(file_exists('../app/model/dao/usuarioDAO.php')){
  else {
     echo 'falha no carregamento do arquivo';    
 }
-  
+*/  
 
 
 

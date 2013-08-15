@@ -28,8 +28,9 @@ function verifica(){
            echo 'Todos os campos devem ser preenchidos!'; 
           }
   }
-  if(isset($_SESSION['erro'])){
-      echo $_SESSION['erro'];
+
+  if(isset($GLOBALS['erro'])){
+      echo $GLOBALS['erro'];
   }
 }      
   

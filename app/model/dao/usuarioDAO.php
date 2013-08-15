@@ -1,8 +1,8 @@
-<?php if(!defined('BASEPATH')) exit('Falha no carregamento do script!');
+<?php /*if(!defined('BASEPATH')) exit('Falha no carregamento do script!');
 
 require_once (BASEMODEL.'conexaoBD.php');
 require_once (BASEMODELCLASS.'usuarioClass.php');
-
+*/
 
 class usuarioDAO{
 
@@ -86,7 +86,7 @@ class usuarioDAO{
 	    $conexao->conectar();
 
 	    # Executa comando SQL
-	    $stmt = $conexao->pdo->prepare('SELECT login, nome, matricula, senha, setor_idsetor, tipousuario_idtipousuario, idusuario FROM usuario WHERE login = ? AND senha = ? ');
+	    $stmt = $conexao->pdo->prepare('SELECT login, nome, matricula, setor_idsetor, tipousuario_idtipousuario, idusuario FROM usuario WHERE login = ? AND senha = ? ');
 
 	    # Passando os valores a serem usados
     	$dados = array($login,$senha);
@@ -94,12 +94,25 @@ class usuarioDAO{
     	$retorno = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
        if($retorno!=null){ 
-    	
-                    session_start();           
-                    $_SESSION['logado'] = true;//ativo a sessão para logado
-                    $_SESSION['usuario'] = $retorno['idusuario'];//armazeno os dados do usuario na sessão usuario
+           
+    	#Inst�ncia da entidade
+    	$usuarioClass = new usuarioClass();
+
+    	foreach( $retorno as $row ){
+
+    		#Atribui valores
+		    $usuarioClass->setLogin($row['login']);
+		    $usuarioClass->setNome($row['nome']);
+		    $usuarioClass->setMatricula($row['matricula']);
+		    $usuarioClass->setSetor_idsetor($row['setor_idsetor']);
+		    $usuarioClass->setTipousuario_idtipousuario($row['tipousuario_idtipousuario']);
+		    $usuarioClass->setIdusuario($row['idusuario']);
+    	}
+                    session_start();
+                    $_SESSION['logado'] = TRUE;
+                    //$_SESSION['usuario'] = $retorno['idusuario'];//armazeno os dados do usuario na sessão usuario
                     
-            return TRUE;
+            return $usuarioClass;
        }
        else{ 
             

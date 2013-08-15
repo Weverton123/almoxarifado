@@ -22,7 +22,7 @@ class autoload{
     }
 
     private function getControl(){//passo 1
-        if(!isset($_SESSION['vals']) && $_REQUEST['action']!='validar'){
+        if($_REQUEST['action']!='validar'){
                
          $_REQUEST['control'] = isset($_REQUEST['control']) ?
                   ($_REQUEST['control']==null ? 'menu':$_REQUEST['control']): 'menu';
@@ -68,7 +68,7 @@ class autoload{
                 ;  
         }
     }
-
+  
 }//fim da classe
 
 

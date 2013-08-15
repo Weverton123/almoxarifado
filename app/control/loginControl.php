@@ -17,14 +17,17 @@ class login {
 
     
     public function validar(){
+      
     //armazeno na variavel $var os valores na sessão vals
     $var = $_SESSION['vals'];
     $t = new usuarioDAO();
-    $t->VerificaUsu($var['user'], $var['senha']);
+   
     
-    if(isset($_SESSION['logado'])){
-           $_SESSION['erro'] = 'Usuario logado com sucesso!';
-            header('Location: ?action=index');
+    if($t->VerificaUsu($var['user'], $var['senha'])){
+            echo 'usuario logado';
+            $_SESSION['erro'] = 'Usuario logado com sucesso!';
+            
+        //header('Location: ?action=logoff');
         }
      else{           
            $_SESSION['erro'] = 'Usuario invalido!';

@@ -23,15 +23,18 @@ class menu extends controller {
     private function carregaMenu(){
         session_start();
         if(isset($_SESSION['logado'])) {
-         $usu = $_SESSION['usuario'];  
+            
+            
+         //$usu = $_SESSION['usuario'];  
+         //echo $usu; 
+
+           
           
-         $tt = new permissaoDAO();
-         $Menu = $tt->ObterPorPK($usu);
-         $t = new menuDAO();
-         $this->res = $t->ObterPorPK($Menu->getMenu_idmenu());   
+          
         }
         //session_unset('erro');
         else{
+            echo 'logado = false';
          $menuNome = array('Entrar','Quem somos','Fale conosco');
          $menuLink = array('index','quemsomos','faleconosco');
          $menu = array();
