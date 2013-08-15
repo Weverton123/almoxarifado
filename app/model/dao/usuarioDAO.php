@@ -94,21 +94,10 @@ class usuarioDAO{
     	$retorno = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
        if($retorno!=null){ 
-    	#Inst�ncia da entidade
-    	$usuarioClass = new usuarioClass();
-           
-    		#Atribui valores
-		    $usuarioClass->setLogin($row['login']);
-		    $usuarioClass->setNome($row['nome']);
-		    $usuarioClass->setMatricula($row['matricula']);
-		    $usuarioClass->setSenha($row['senha']);
-		    $usuarioClass->setSetor_idsetor($row['setor_idsetor']);
-		    $usuarioClass->setTipousuario_idtipousuario($row['tipousuario_idtipousuario']);
-		    $usuarioClass->setIdusuario($row['idusuario']);
     	
                     session_start();           
                     $_SESSION['logado'] = true;//ativo a sessão para logado
-                    $_SESSION['usuario'] = $usuarioClass;//armazeno os dados do usuario na sessão usuario
+                    $_SESSION['usuario'] = $retorno['idusuario'];//armazeno os dados do usuario na sessão usuario
                     
             return TRUE;
        }

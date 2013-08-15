@@ -81,17 +81,19 @@ class permissaoDAO{
     	$stmt->execute($dados);
     	$retorno = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    	#Inst�ncia da entidade
-    	$permissaoClass = new permissaoClass();
-
+        $lista = array();
+        $i=0;
     	foreach( $retorno as $row ){
-
+                #Inst�ncia da entidade
+                $permissaoClass = new permissaoClass();
     		#Atribui valores
 		    $permissaoClass->setMenu_idmenu($row['menu_idmenu']);
 		    $permissaoClass->setUsuario_idusuario($row['usuario_idusuario']);
+            $lista[$i] = $permissaoClass;
+            $i++;
     	}
 
-    	return $permissaoClass;
+    	return $lista;
     }
     /*
     * Obtem todos

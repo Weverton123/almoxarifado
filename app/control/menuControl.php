@@ -26,7 +26,7 @@ class menu extends controller {
          $usu = $_SESSION['usuario'];  
           
          $tt = new permissaoDAO();
-         $Menu = $tt->ObterPorPK($usu->getIdusuario());
+         $Menu = $tt->ObterPorPK($usu);
          $t = new menuDAO();
          $this->res = $t->ObterPorPK($Menu->getMenu_idmenu());   
         }

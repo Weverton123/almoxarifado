@@ -53,7 +53,7 @@ and open the template in the editor.
                                             //<li class="current"><a href="<?=$class>index">Entrar</a></li>
 					
                                           //echo $row->getNome().'/'.$row->getLink().'<br>';
-                                           echo '<li class="current"><a href="'.$class.$row->getlink().'">'.$row->getNome().'</a></li>';
+                                           echo '<li class="current"><a href="'.$class.$row->getlink().'">'.utf8_encode($row->getNome()).'</a></li>';
                                              }
                                           }
                                         ?>
