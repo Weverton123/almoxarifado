@@ -25,28 +25,20 @@ class menu extends controller {
         session_start();
         if(isset($_SESSION['session']['logado'])){ 
           
-            echo 'logado = true';
+         //echo 'logado = true';
          $vars = $_SESSION['session']['logado'];
          //print_r($vars);
-         $vars = unserialize($vars);
-         $menu = new menuClass();
-         $menu = $vars;
-         $lista_menu = array();
-         $i=0;
-         /*
-         foreach ($menu as $ls){
-             $lista_menu[$i] = $ls;
-             $i++;
-         } */
-         
+         $vars = unserialize($vars);//disserializo o objeto armazenado na sessão
+         $menu = new menuClass();//crio um objeto para armazenar o objeto trazido pela sessão
+         $menu = $vars;//armazeno na variavel $menu o objeto trazido pela sessão
          
          $this->res = $menu;
            
           
         }
-        //session_unset('erro');
+       
         else{
-            echo 'logado = false';
+         //echo 'logado = false';
          $menuNome = array('Entrar','Quem somos','Fale conosco');
          $menuLink = array('index','quemsomos','faleconosco');
          $menu = array();
