@@ -6,7 +6,7 @@
  * @author italo
  */
 require_once (BASESYSTEM.'configDB.php');
-
+require_once (BASESYSTEM.'seguranca.php');
 
 class controller extends configDB{
 //variável $val é utilizada para passar parâmetros para a view requisitada

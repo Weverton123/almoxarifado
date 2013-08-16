@@ -70,6 +70,7 @@ class autoload{
                 ;  
         }
     }
+ 
   
 }//fim da classe
 

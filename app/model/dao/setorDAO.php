@@ -1,6 +1,6 @@
 <?php if(!defined('BASEPATH')) exit('Falha no carregamento do script!');
 
-require_once (BASEMODEL.'conexaoBD.php');
+//require_once (BASEMODEL.'conexaoBD.php');
 require_once (BASEMODELCLASS.'setorClass.php');
 
 class setorDAO{

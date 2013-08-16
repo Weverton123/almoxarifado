@@ -1,22 +1,29 @@
-<?php
+<?php if(!defined('BASEPATH')) exit('Falha no carregamento do script!');
 /**
  * Description of seguranca
  *
  * @author italo
  */
-class seguranca {
- 
-    public function seguranca_arq($arquivo){
+
+session_start();
+
+
+     function seguranca_arq(){
 	
-	if(basename($_SERVER["PHP_SELF"])== $arquivo){
-		
-		exit("<script>alert('Acesso nao permitido')</script>\n
-                     <script>window.location=('index.php')</script>");	
-        	}
-	}
-        public function redirecionar($local=null,$retorno=null){
+        if(isset($_SESSION['session']['logado'])){
+          #faltando colocar a segurança para caso o usuario nao tenha acesso!
+          
+        }
+        else{
+            //echo 'nao logado';
+            redirecionar();
+        }
+        
+        
+    }
+
+    function redirecionar($retorno=null,$local=null){
            header('location:  '.($local!=null?$local:'index').'.php'.$retorno);
 	}
-}
 
-?>
+

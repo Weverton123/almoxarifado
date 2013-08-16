@@ -1,6 +1,34 @@
 ﻿<?php if(!defined('BASEPATH')) exit('Falha no carregamento do BASEPATH!');
   //Ativa o Buffer que armazena o conteúdo principal da página
   ob_start();
+  seguranca_arq();
+  
+  if(isset($_REQUEST['inserts'])){
+      
+      if(isset($_POST['setor'])? ($_POST['setor'] !=NULL ? TRUE : FALSE):FALSE){
+          session_start();
+              $control = 'setor';
+              $action  = 'inserir';
+              $setor   = $_REQUEST['setor'];
+             $_vals = array(               'control'=>$control,
+                                           'action'=>$action,
+                                           'setor'=>$setor
+                                 );      
+               $_SESSION['session'] = $_vals;
+                
+                    
+               header("Location: ?control={$control}&action={$action}");
+      }
+      else{
+         $erro = 'O setor deve ser informado!';
+          //header('Location: ?action=cliente');
+      }
+          
+  }  
+  if(isset($erro))
+      $erro = $erro!=NULL ? $erro :'' ;
+      echo $erro;
+  
 ?>
 <!--
 	Início de conteúdo
@@ -24,13 +52,13 @@
 		
 <div class="modulo">
 	<h3>Inserir setor</h3>
-	<form id="">
+        <form  action="" method="post">
 		<p>
 			<strong>Nome do setor</strong><br />
-			<input type="text" value="" />
+                        <input type="text" name="setor" value="" />
 		</p>
 		<p>
-			<input type="submit" value="Inserir setor" />
+                    <input type="submit" name="inserts" value="Inserir setor" />
 		</p>
 	</form>
 </div>
