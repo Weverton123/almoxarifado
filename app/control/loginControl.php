@@ -50,7 +50,9 @@ class login {
             }*/
           
 
-         $_SESSION['session']=array('logado'=>  serialize($lista_menu));  
+         $_SESSION['session']=array('logado'=>  serialize($lista_menu),
+                                    'usuario' => serialize($ret)
+                                    );  
          header('Location: ?action=minhaarea');
         }
      else{ 

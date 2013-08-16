@@ -1,7 +1,7 @@
 ﻿<?php if(!defined('BASEPATH')) exit('Falha no carregamento do BASEPATH!');
   //Ativa o Buffer que armazena o conteúdo principal da página
   ob_start();
-
+  session_start();
 ?>
 <!--
 	Início de conteúdo
@@ -10,18 +10,28 @@
 
 <div class="modulo">
 	<h3>Meus dados</h3>
+        <?php if(isset($_SESSION['session']['usuario'])){
+     
+                $usu = $_SESSION['session']['usuario'];
+                $usu = unserialize($usu);
+                $usuario = new usuarioClass();
+                $usuario = $usu;
+            ?>
 	<p>
-		<strong>Login:</strong> marcel
+            <strong>Login:</strong>  <?=$usuario->getLogin() ?> 
 	</p>
 	<p>
-		<strong>Nome:</strong> Marcel Gleidson Bezerra de Freitas
+            <strong>Nome:</strong>   <?=$usuario->getNome() ?>
 	</p>
+        <!--
 	<p>
-		<strong>E-mail:</strong> marcel@bczm.ufrn.br
-	</p>	
-	<p>
-		<strong>Setor:</strong> Seção de Suporte Técnico
+		<strong>E-mail:</strong>
 	</p>
+        -->	
+	<p>
+            <strong>Setor:</strong>  <?= $usuario->getSetor_idsetor() ?>
+	</p>
+        <?php } ?>
 </div>
 		
 <div class="modulo">
