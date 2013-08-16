@@ -14,8 +14,10 @@
     define('BASECONTROL', 'app/control/');
     define('BASEVIEWINC', BASEVIEW.'includes/');
    
-    //$_SESSION['vals'] serve para armazenar os valores para carregar o menu
-    
+    //$_SESSION['session'] serve para armazenar os valores em uma session 
+    //valores bi-dimensional para realizar uma busca eh preciso utilizar 
+    //a seguinte estrutur $_SESSION['session']['nome_da_sessao_criada']
+    $_array_geral = array();
     
     
    // echo isset($_GET['control']) ? $_GET['control']:'nao existe ou vazio';

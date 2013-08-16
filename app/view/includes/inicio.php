@@ -4,9 +4,9 @@
   ob_start();
   verifica(); 
   
-  
+    session_start();
 function verifica(){
-   session_start();
+   
     if(isset($_REQUEST['validar'])){ 
          if(isset($_REQUEST['username']) && isset($_REQUEST['password']) ? ($_REQUEST['username']== NULL ||$_REQUEST['password']==NULL
              ? FALSE :TRUE):FALSE){ 
@@ -15,23 +15,29 @@ function verifica(){
                 $action = 'verificar';//ação na qual realiza a verificação e validação do usuario
                 $user  = $_REQUEST['username'];//valor passado na requisição pelo formulario de login
                 $senha = $_REQUEST['password'];//valor passado na requisição pelo formulario de login 
-               
-                    $_SESSION['vals'] = array(  'control'=>$control,
+                
+                    $_vals = array(  'control'=>$control,
                                             'action'=>$action,
                                             'user'=>$user,
                                             'senha'=>$senha
                         );
+               $_SESSION['session'] = $_vals;
                 
-                header('Location:?action=validar');
+                    
+                header("Location:?action=validar");
           }
            else{
            echo 'Todos os campos devem ser preenchidos!'; 
           }
   }
 
-  if(isset($GLOBALS['erro'])){
-      echo $GLOBALS['erro'];
+  if(isset($_SESSION['session']['erro'])){
+      echo $_SESSION['session']['erro'];
   }
+ 
+  
+  
+  
 }      
   
  

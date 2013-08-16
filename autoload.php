@@ -1,5 +1,7 @@
 <?php if(!defined('BASEPATH')) exit('Falha no carregamento do script!');
 
+session_start();
+
 class autoload{    
     
     //Variavel $control serve para armazenar o controle enviado pelo link 
@@ -30,12 +32,11 @@ class autoload{
           return $this->control = $_REQUEST['control'];
         }
         else  {
-            session_start();
-            $vals = $_SESSION['vals'];
+
+            $vals = $_SESSION['session'];
             $this->control = $vals['control'];
-            $this->action  = $vals['action']; 
-               
-           //session_destroy();
+            $this->action  = $vals['action'];
+         
            
         }
         
