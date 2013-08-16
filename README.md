@@ -3,7 +3,7 @@ almoxarifado
 
 sistema almoxarifado bczm
 
-Instalação \n
+Instalação 
 
 Passo1:
   execute o sql no banco de dados.\n
