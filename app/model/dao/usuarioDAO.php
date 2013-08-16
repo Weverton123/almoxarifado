@@ -86,7 +86,7 @@ class usuarioDAO{
 	    $conexao->conectar();
 
 	    # Executa comando SQL
-	    $stmt = $conexao->pdo->prepare('SELECT login, nome, matricula, setor_idsetor, tipousuario_idtipousuario, idusuario FROM usuario WHERE login = ? AND senha = ? ');
+	    $stmt = $conexao->pdo->prepare('SELECT login, nome, matricula, (SELECT nome FROM setor WHERE idsetor = setor_idsetor) as setor, tipousuario_idtipousuario, idusuario FROM usuario WHERE login = ? AND senha = ? ');
 
 	    # Passando os valores a serem usados
     	$dados = array($login,$senha);
@@ -104,12 +104,11 @@ class usuarioDAO{
 		    $usuarioClass->setLogin($row['login']);
 		    $usuarioClass->setNome($row['nome']);
 		    $usuarioClass->setMatricula($row['matricula']);
-		    $usuarioClass->setSetor_idsetor($row['setor_idsetor']);
+		    $usuarioClass->setSetor_idsetor($row['setor']);
 		    $usuarioClass->setTipousuario_idtipousuario($row['tipousuario_idtipousuario']);
 		    $usuarioClass->setIdusuario($row['idusuario']);
     	}
-                    session_start();
-                    $_SESSION['logado'] = TRUE;
+                    
                     //$_SESSION['usuario'] = $retorno['idusuario'];//armazeno os dados do usuario na sessão usuario
                     
             return $usuarioClass;
