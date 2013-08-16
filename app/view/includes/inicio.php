@@ -12,19 +12,19 @@ function verifica(){
              ? FALSE :TRUE):FALSE){ 
              
                 $control = 'login';//controle no qual tem os metodos para login
-                $action = 'verificar';//ação na qual realiza a verificação e validação do usuario
+                $action = 'validar';//ação na qual realiza a verificação e validação do usuario
                 $user  = $_REQUEST['username'];//valor passado na requisição pelo formulario de login
                 $senha = $_REQUEST['password'];//valor passado na requisição pelo formulario de login 
                 
-                    $_vals = array(  'control'=>$control,
+                    $_vals = array(         'control'=>$control,
                                             'action'=>$action,
                                             'user'=>$user,
                                             'senha'=>$senha
-                        );
+                                 );      
                $_SESSION['session'] = $_vals;
                 
                     
-                header("Location:?action=validar");
+               header("Location: ?control={$control}&action={$action}");
           }
            else{
            echo 'Todos os campos devem ser preenchidos!'; 

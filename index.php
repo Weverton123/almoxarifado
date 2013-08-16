@@ -1,5 +1,5 @@
 <?php   
-    
+   
     //Constantes definidas com bases de cada diretório 
     define('BASEPATH', getcwd().DIRECTORY_SEPARATOR);
     define('BASECSS','style/css/');

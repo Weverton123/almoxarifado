@@ -4,6 +4,7 @@
  *
  * @author italo
  */
+require_once (BASEMODEL.'conexaoBD.php');//realiza a conexao com o banco
 require_once (BASEMODELDAO.'usuarioDAO.php');
 require_once (BASEMODELDAO.'permissaoDAO.php');
 require_once (BASEMODELDAO.'menuDAO.php');
@@ -22,14 +23,25 @@ class menu extends controller {
 
     private function carregaMenu(){
         session_start();
-        if(isset($_SESSION['logado'])) {
-            
-            
-         //$usu = $_SESSION['usuario'];  
-         //echo $usu; 
-
-           
+        if(isset($_SESSION['session']['logado'])){ 
           
+            echo 'logado = true';
+         $vars = $_SESSION['session']['logado'];
+         //print_r($vars);
+         $vars = unserialize($vars);
+         $menu = new menuClass();
+         $menu = $vars;
+         $lista_menu = array();
+         $i=0;
+         /*
+         foreach ($menu as $ls){
+             $lista_menu[$i] = $ls;
+             $i++;
+         } */
+         
+         
+         $this->res = $menu;
+           
           
         }
         //session_unset('erro');

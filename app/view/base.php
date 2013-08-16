@@ -56,6 +56,9 @@ and open the template in the editor.
                                            echo '<li class="current"><a href="'.$class.$row->getlink().'">'.utf8_encode($row->getNome()).'</a></li>';
                                              }
                                           }
+                                        else {
+                                              echo 'Falha no carregamento do menu!';
+                                        }
                                         ?>
                                         
 

@@ -18,7 +18,8 @@ class autoload{
               $this->getAction();//passo 2
               $this->getController();//passo 3
               
-             // echo $this->control.'..'.$this->action;
+             
+              //echo $this->control.'..'.$this->action;
              $this->load($this->control, $this->action);//passo 4
               
     }
