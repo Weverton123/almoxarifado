@@ -2,22 +2,27 @@
   //Ativa o Buffer que armazena o conteúdo principal da página
   ob_start();
   seguranca_arq();
+  require_once (BASEMODEL.'conexaoBD.php');
+  require_once (BASEMODELDAO.'setorDAO.php');
   
+   session_start();
+   if(isset($_SESSION['session']['acoes']['msg'])){
+       $erro = $_SESSION['session']['acoes']['msg'];
+   }
   if(isset($_REQUEST['inserts'])){
       
       if(isset($_POST['setor'])? ($_POST['setor'] !=NULL ? TRUE : FALSE):FALSE){
-          session_start();
+         
               $control = 'setor';
               $action  = 'inserir';
               $setor   = $_REQUEST['setor'];
-             $_vals = array(               'control'=>$control,
+              $_vals = array(              'control'=>$control,
                                            'action'=>$action,
                                            'setor'=>$setor
                                  );      
-               $_SESSION['session'] = $_vals;
-                
+              $_SESSION['session']['acoes'] = $_vals;
                     
-               header("Location: ?control={$control}&action={$action}");
+            header("Location: ?control={$control}&action={$action}");
       }
       else{
          $erro = 'O setor deve ser informado!';
@@ -106,7 +111,6 @@
 <div class="modulo">
 	<h3>Listar usuários</h3>	
 </div>
-
 <div class="modulo">
 	<h3>Inserir usuário</h3>	
 	<form id="">

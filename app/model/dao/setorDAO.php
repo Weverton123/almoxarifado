@@ -73,16 +73,16 @@ class setorDAO{
 	    $conexao->conectar();
 
 	    # Executa comando SQL
-	    $stmt = $conexao->pdo->prepare('SELECT idsetor, nome FROM setor WHERE idsetor = ? ');
+	    $stmt = $conexao->pdo->prepare('SELECT idsetor, nome FROM setor WHERE idsetor = ? OR nome = ? ');
 
 	    # Passando os valores a serem usados
-    	$dados = array($pk);
+    	$dados = array($pk,$pk);
     	$stmt->execute($dados);
     	$retorno = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+        if($retorno !=NULL){
     	#Inst�ncia da entidade
     	$setorClass = new setorClass();
-
+        
     	foreach( $retorno as $row ){
 
     		#Atribui valores
@@ -90,7 +90,12 @@ class setorDAO{
 		    $setorClass->setNome($row['nome']);
     	}
 
-    	return $setorClass;
+        return $setorClass;
+        
+        }
+        else {
+            return FALSE;
+        }
     }
     /*
     * Obtem todos

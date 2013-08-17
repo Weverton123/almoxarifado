@@ -51,7 +51,8 @@ class login {
           
 
          $_SESSION['session']=array('logado'=>  serialize($lista_menu),
-                                    'usuario' => serialize($ret)
+                                    'usuario' => serialize($ret),
+                                    'acoes'=>''
                                     );  
          header('Location: ?action=minhaarea');
         }
