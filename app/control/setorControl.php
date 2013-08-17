@@ -11,7 +11,7 @@
  * @author italo
  */
 
-require_once (BASEMODEL.'conexaoBD.php');//realiza a conexao com o banco
+//require_once (BASEMODEL.'conexaoBD.php');//realiza a conexao com o banco
 require_once (BASEMODELDAO.'setorDAO.php');
 session_start();
 class setor {    
@@ -55,6 +55,19 @@ class setor {
             echo 'FALHA NA CRIAÇÃO DA SESSÃO!'; exit('CONTATE O ADMINISTRADOR!');
         }
        //header('Location: ?action=cliente');  
+    }
+    
+    public function buscar(){
+        
+    }
+    public function listar(){
+        
+    }
+    public function alterar(){
+        
+    }
+    public function excluir(){
+        
     }
     
 }

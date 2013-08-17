@@ -44,7 +44,7 @@ class autoload{
     }
     private function getAction(){//passo 2
         $_REQUEST['action'] = isset($_REQUEST['action']) ?
-                 ($_REQUEST['action']==null ? 'index': $_REQUEST['action']):'index';
+                 ($_REQUEST['action']==null ? 'index': $_REQUEST['action'] ):'index';
         return $this->action = $_REQUEST['action'];
     }
     private function getController(){//passo 3 

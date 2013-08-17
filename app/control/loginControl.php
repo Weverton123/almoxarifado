@@ -2,7 +2,7 @@
 
 //Carrego as classes  DAO's para realizar as comunicações com o banco de dados 
 //e buscar os menus de acordo com as permissoes
-require_once (BASEMODEL.'conexaoBD.php');//realiza a conexao com o banco
+//require_once (BASEMODEL.'conexaoBD.php');//realiza a conexao com o banco
 require_once (BASEMODELDAO.'usuarioDAO.php');//metodos CRUD do usuario 
 require_once (BASEMODELDAO.'permissaoDAO.php');//metodos CRUD de permissoes 
 require_once (BASEMODELDAO.'menuDAO.php');//metodos CRUD do menu 

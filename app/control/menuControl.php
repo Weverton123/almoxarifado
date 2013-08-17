@@ -4,7 +4,7 @@
  *
  * @author italo
  */
-require_once (BASEMODEL.'conexaoBD.php');//realiza a conexao com o banco
+//require_once (BASEMODEL.'conexaoBD.php');//realiza a conexao com o banco
 require_once (BASEMODELDAO.'usuarioDAO.php');
 require_once (BASEMODELDAO.'permissaoDAO.php');
 require_once (BASEMODELDAO.'menuDAO.php');
@@ -88,7 +88,7 @@ class menu extends controller {
     }
     public function logoff(){
         session_start();
-        session_unset('logado');
+        session_unset('session');
         
         $_SESSION['erro'] = 'Logoff realizado com sucesso!';
         header('Location: ?action=index');

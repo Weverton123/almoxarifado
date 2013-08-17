@@ -10,9 +10,21 @@ session_start();
 
      function seguranca_arq(){
 	
-        if(isset($_SESSION['session']['logado'])){
-          #faltando colocar a segurança para caso o usuario nao tenha acesso!
-          
+        if(isset($_SESSION['session']['logado'])){//verifica se usuario está logado e para verificar se ele tem acesso a página
+          $menuDisp = unserialize($_SESSION['session']['logado']);
+          $menu = new menuClass();
+          $menu = $menuDisp;
+          $acesso = FALSE;
+          foreach ($menu as $ls){
+              if($ls->getLink()==$_REQUEST['action']){//verifica se o usuario logado tem acesso a pagina requisitada
+                  $acesso=TRUE;
+                  break;
+              }
+          }
+          if(!$acesso){
+              redirecionar('?action=minhaarea');
+          }
+              
         }
         else{
             //echo 'nao logado';

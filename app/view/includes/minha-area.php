@@ -1,6 +1,7 @@
 ﻿<?php if(!defined('BASEPATH')) exit('Falha no carregamento do BASEPATH!');
   //Ativa o Buffer que armazena o conteúdo principal da página
   ob_start();
+  seguranca_arq();
   session_start();
 ?>
 <!--
@@ -40,21 +41,17 @@
 
 <div class="modulo">
 	<h3>Alterar meus dados</h3>
-	<form id="" action="">
+        <form id="" action="" method="post">
 		<p>
 			<strong>Login</strong><br />
-			<input type="text" value="" />
+                        <input type="text" name="login" value="" />
 		</p>
 		<p>
 			<strong>Nome</strong><br />
-			<input type="text" value="" />
+                        <input type="text" name="nome" value="" />
 		</p>
 		<p>
-			<strong>E-mail</strong><br />
-			<input type="text" value="" />
-		</p>
-		<p>
-			<input type="submit" value="Alterar dados" />
+                    <input type="submit" name="alterarD" value="Alterar dados" />
 		</p>
 		<p>
 			*O setor pode ser alterado somente pelo administrador deste sistema. Se necessário, solicite através do menu Fale Conosco.

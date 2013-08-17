@@ -1,6 +1,7 @@
 <?php if(!defined('BASEPATH')) exit('Falha no carregamento do script!');
 
 
+require_once (BASEMODEL.'conexaoBD.php');//realiza a conexao com o banco
 require_once (BASEMODELCLASS.'usuarioClass.php');
 
 

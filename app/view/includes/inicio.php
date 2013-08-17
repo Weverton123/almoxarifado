@@ -2,8 +2,8 @@
    if(!defined('BASEPATH')) exit('Falha no carregamento do script!');
   //Ativa o Buffer que armazena o conteúdo principal da página
   ob_start();
-  verifica(); 
   
+  verifica(); 
     session_start();
 function verifica(){
    
