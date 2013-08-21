@@ -2,8 +2,14 @@
 // Define que o arquivo terá a codificação de saída no formato CSS
 //header("Content-type: text/css"); 
 
+require_once (BASECSS.'table.php');
 ?>
+
+
 <style type="text/css">
+
+    
+    
 @font-face {
 	font-family: 'Tangerine';
 	font-style: normal;

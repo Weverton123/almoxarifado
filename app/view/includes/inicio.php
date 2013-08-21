@@ -31,9 +31,6 @@ function verifica(){
           }
   }
 
-  if(isset($_SESSION['session']['erro'])){
-      echo $_SESSION['session']['erro'];
-  }
  
   
   

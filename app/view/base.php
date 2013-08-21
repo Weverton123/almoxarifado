@@ -1,4 +1,4 @@
-<?php if(!defined('BASEPATH')) exit('Falha no carregamento do script!'); ?>
+﻿<?php if(!defined('BASEPATH')) exit('Falha no carregamento do script!'); ?>
 <!--
 To change this template, choose Tools | Templates
 and open the template in the editor.
@@ -53,7 +53,7 @@ and open the template in the editor.
                                             //<li class="current"><a href="<?=$class>index">Entrar</a></li>
 					
                                           //echo $row->getNome().'/'.$row->getLink().'<br>';
-                                           echo '<li class="current"><a href="'.$class.$row->getlink().'">'.utf8_encode($row->getNome()).'</a></li>';
+                                           echo '<li class="current"><a href="'.$class.$row->getlink().'">'.$row->getNome().'</a></li>';
                                              }
                                           }
                                         else {
@@ -76,10 +76,17 @@ and open the template in the editor.
 				</div>
 			</div>-->
 			<div id="content">
+                                <!-- Área para mensagem retornada de erro ou aviso  -->
+                                <?php
+                                    if(isset($_SESSION['session']['msg'])) echo $_SESSION['session']['msg'];
+                                    else if(isset($_SESSION['session']['acoes']['msg']))
+                                        echo $_SESSION['session']['acoes']['msg'];
+                                   
+                                ?>
 				<!-- inserir conteudo da pagina aqui -->
 				<?php
 					if(isset($page)) echo $page; 
-						else echo $page = '' 
+						else echo $page = 'NENHUMA PÁGINA FOI CARREGADA!'; 
 				?>
 			</div>
 		</div>

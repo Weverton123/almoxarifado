@@ -3,6 +3,62 @@
   ob_start();
   seguranca_arq();
   session_start();
+  //É utilizada uma outra forma de validação do formulário pelo php, apenas para garantir que a nova senha
+  //será realmente a informada
+  if(isset($_REQUEST['alterarS'])){
+    
+      if (isset($_REQUEST['senhaAt'])?($_REQUEST['senhaAt']== NULL? FALSE:TRUE):FALSE){
+          if(isset($_REQUEST['senha'])?($_REQUEST['senha']== NULL? FALSE:TRUE):FALSE){
+            if(isset($_REQUEST['newsenha'])?($_REQUEST['newsenha']== NULL? FALSE:TRUE):FALSE){
+                if ($_REQUEST['senha'] == $_REQUEST['newsenha']){
+                    
+                $control = 'login';//controle no qual tem os metodos para login
+                $action = 'alterarsenha';//ação
+                $senha  = $_REQUEST['senhaAt'];//valor passado na requisição pelo formulario de login
+                $newsenha = $_REQUEST['senha'];//valor passado na requisição pelo formulario de login 
+                
+                    $_vals = array(         'senha'=>$senha,
+                                            'newsenha'=>$newsenha
+                                 );      
+                  $_SESSION['session']['acoes'] = $_vals;
+                 header("Location: ?control={$control}&action={$action}");
+                }
+               else {
+                   $_SESSION['session']['acoes']['msg'] = 'As senhas não conferem!';
+                }
+              }
+            else {$_SESSION['session']['acoes']['msg'] = 'Todos os campos devem ser preenchidos!!!';}
+          }
+          else {$_SESSION['session']['acoes']['msg'] = 'Todos os campos devem ser preenchidos!!';}
+      }
+     else {
+          $_SESSION['session']['acoes']['msg'] = 'Todos os campos devem ser preenchidos!';    
+      }
+      
+      
+  }
+  
+  if(isset($_REQUEST['alterarD'])){
+      if(isset($_REQUEST['login'])?($_REQUEST['login']== NULL? FALSE :TRUE):FALSE){
+          if (isset($_REQUEST['senhaAt'])?($_REQUEST['senhaAt']== NULL? FALSE:TRUE):FALSE){
+          
+              $control = 'login';//controle no qual tem os metodos para login
+              $action = 'alterarlogin';//ação
+                
+              $_vals = array( 'newlogin' => $_REQUEST['login'],
+                              'senha' => $_REQUEST['senhaAt']);
+              $_SESSION['session']['acoes'] = $_vals;
+              header("Location: ?control={$control}&action={$action}");
+          }
+          else {
+              $_SESSION['session']['acoes']['msg'] = 'A senha deve ser informada para confirmação!';
+          }
+      }
+      else{
+          $_SESSION['session']['acoes']['msg'] = 'O campo login não foi informado!';
+      }
+          
+  }
 ?>
 <!--
 	Início de conteúdo
@@ -46,9 +102,9 @@
 			<strong>Login</strong><br />
                         <input type="text" name="login" value="" />
 		</p>
-		<p>
-			<strong>Nome</strong><br />
-                        <input type="text" name="nome" value="" />
+                <p>
+			<strong>Senha atual</strong><br />
+                        <input type="password" name="senhaAt"  />
 		</p>
 		<p>
                     <input type="submit" name="alterarD" value="Alterar dados" />
@@ -61,21 +117,21 @@
 
 <div class="modulo">
 	<h3>Alterar minha senha</h3>	
-	<form id="" action="">
+        <form id="" action="" method="post">
 		<p>
 			<strong>Senha atual</strong><br />
-			<input type="password" />
+                        <input type="password" name="senhaAt"  />
 		</p>
 		<p>
 			<strong>Nova senha</strong><br />
-			<input type="password" />
+                        <input type="password" id="senha" name="senha"  />
 		</p>
 		<p>
 			<strong>Confirmação da nova senha</strong><br />
-			<input type="password" />
+                        <input type="password" id="newsenha" name="newsenha" />
 		</p>
 		<p>
-			<input type="submit" value="Alterar senha" />
+                    <input type="submit" name="alterarS" value="Alterar senha" />
 		</p>
 	</form>
 </div>

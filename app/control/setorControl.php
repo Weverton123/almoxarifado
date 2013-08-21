@@ -20,7 +20,7 @@ class setor {
 
     public function inserir(){
       $action  = 'cliente';   
-     if($_SESSION['session']['acoes']['setor']){
+      if($_SESSION['session']['acoes']['setor']){
       $vars =  $_SESSION['session']['acoes']['setor'];
      
       $setorMod = new setorClass();
@@ -29,7 +29,7 @@ class setor {
       $ret = $setor->ObterPorPK($vars);
       //echo $ret->getNome();
       if(!$ret){
-          echo 'setor pode ser cadastrado';
+          //echo 'setor pode ser cadastrado';
            $ret = $setor->incluir($setorMod);
 
             if(!$ret){

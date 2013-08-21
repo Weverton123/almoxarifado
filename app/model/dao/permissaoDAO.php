@@ -43,7 +43,7 @@ class permissaoDAO{
     * Insere dados recebendo valores via par�metro
     * ---------------------------------------------
     */
-    public function incluir($dados){
+    public function incluir($idmenu,$idusuario){
         # Faz conex�o
         $conexao = new conexaoBanco();
         $conexao->conectar();
@@ -53,8 +53,8 @@ class permissaoDAO{
 
 
 
-			$stmt->bindValue(1,$dados->getMenu_idmenu());
-			$stmt->bindValue(2,$dados->getUsuario_idusuario());
+			$stmt->bindValue(1,$idmenu);
+			$stmt->bindValue(2,$idusuario);
 
             $retorno = $stmt->execute();
         }

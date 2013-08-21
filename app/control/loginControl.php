@@ -18,7 +18,10 @@ require_once (BASEMODELDAO.'menuDAO.php');//metodos CRUD do menu
 
 class login {   
 
-    
+    public function didi(){
+        echo 'IAAAEEEE!';
+    }
+
     public function validar(){
         
     //armazeno na variavel $var os valores na sessão vals
@@ -58,18 +61,101 @@ class login {
         }
      else{ 
         
-           $_SESSION['session']['erro'] = 'Usuario invalido!';
+           $_SESSION['session']['msg'] = 'Usuario inválido!';
            header('Location: ?action=index');
      }
        
     
     }
     public function cadastrar(){
+        print_r($_SESSION['session']['acoes']);
+        $usu = new usuarioClass();
+        $usu->setNome($_SESSION['session']['acoes']['nome']);
+        $usu->setLogin($_SESSION['session']['acoes']['login']);
+        $usu->setSenha($_SESSION['session']['acoes']['senha']);
+        $usu->setSetor_idsetor($_SESSION['session']['acoes']['setor']);
+        $usu->setTipousuario_idtipousuario($_SESSION['session']['acoes']['tipousu']);
+        
+        $usuario = new usuarioDAO();
+        $ret = $usuario->ObterPorPK($usu->getLogin());
+        
+        if(!$ret){
+            $_SESSION['session']['acoes']['msg'] = 'Login já cadastrado!';
+        }
+        else {
+            $ret = $usuario->incluir($usu);
+            if($ret){//se o usuario for cadastrador com sucesso insiro as permissões de acesso
+                $perm = new permissaoDAO();
+                $listPerm = $_SESSION['session']['acoes']['permissao'];
+                    foreach ($listPerm as $ls){
+                        $perm->incluir($ls,$usu->getIdusuario());
+                    }
+                  $_SESSION['session']['acoes']['msg'] = 'Cadastro realizado com sucesso!';
+            }
+            else {
+                $_SESSION['session']['acoes']['msg'] = 'Falha ao cadastrar usuário!';
+            }
+            
+        }
+        
+        header('Location: ?action=cliente');
+        
+     }
+    public function alterarsenha(){
+        $usuario = new usuarioDAO();
+        
+        $usu = new usuarioClass();
+        $usu = unserialize($_SESSION['session']['usuario']);
+        
+        $senha = $_SESSION['session']['acoes'] ;
+        
+        //$_SESSION['session']['acoes']['msg']=$usu->getLogin().' '.$senha['senha'];
+        
+        $ret = $usuario->VerificaUsu($usu->getLogin(), $senha['senha']);
+        
+        if($ret){
+            
+            $ret = $usuario->alterarSenha($senha['newsenha'], $ret->getIdusuario());
+           
+            if($ret > 0){
+              $_SESSION['session']['acoes']['msg']='Senha alterada com sucesso!';
+            }
+            else{
+              $_SESSION['session']['acoes']['msg']='Falha na alteração!';  
+            }
+        }
+        else {
+            $_SESSION['session']['acoes']['msg']='Senha inválida!';
+        }
+        header('Location: ?action=minhaarea');
         
     }
-    public function alterarsenha(){
+    public function alterarlogin(){
+        $usuario = new usuarioDAO();
         
+        $usu = new usuarioClass();
+        $usu = unserialize($_SESSION['session']['usuario']);
+        
+        $alterar = $_SESSION['session']['acoes'] ;   
+        
+        $ret = $usuario->VerificaUsu($usu->getLogin(), $alterar['senha']);
+          
+        if($ret){        
+            $ret = $usuario->alterarLogin($alterar['newlogin'], $ret->getIdusuario());
+           
+            if($ret > 0){
+                $usu->setLogin($alterar['newlogin']);
+              $_SESSION['session']['usuario'] = serialize($usu);  
+              $_SESSION['session']['acoes']['msg']='Login alterado com sucesso!';
+            }
+            else{
+              $_SESSION['session']['acoes']['msg']='Falha na alteração!';  
+            }
+        }
+        else {
+        $_SESSION['session']['acoes']['msg']='Senha inválida!';
+        }
+        header('Location: ?action=minhaarea');
     }
 }
 
-?>

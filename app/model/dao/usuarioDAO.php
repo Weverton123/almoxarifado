@@ -7,33 +7,49 @@ require_once (BASEMODELCLASS.'usuarioClass.php');
 
 class usuarioDAO{
 
-    /*
-    * Altera
-    * Recebe array como parametro
-    */
-    public function Update($dados){
+    public function alterarLogin($login,$idusuario){
 
         $retorno = 0;
-
+        
         # Faz conex�o
         $conexao = new conexaoBanco();
         $conexao->conectar();
-
+        
         # Executa comando SQL
-        $stmt = $conexao->pdo->prepare('UPDATE usuario SET login = ?, nome = ?, matricula = ?, senha = ?, setor_idsetor = ?, tipousuario_idtipousuario = ?, idusuario = ?  WHERE idusuario = ?');
-
-        # Seta Atributos nulos
-
+        $stmt = $conexao->pdo->prepare("UPDATE usuario SET login = ? WHERE idusuario = ?");
 
         # Parametros
-        $stmt->bindValue(1,$dados->getLogin());
-        $stmt->bindValue(2,$dados->getNome());
-        $stmt->bindValue(3,$dados->getMatricula());
-        $stmt->bindValue(4,$dados->getSenha());
-        $stmt->bindValue(5,$dados->getSetor_idsetor());
-        $stmt->bindValue(6,$dados->getTipousuario_idtipousuario());
-        $stmt->bindValue(7,$dados->getIdusuario());
+        $stmt->bindValue(1,$login);
+        $stmt->bindValue(2,$idusuario);
 
+        try{
+            $retorno = $stmt->execute();
+        }
+        catch (PDOException $e) {
+            echo 'Erro: '.$e->getMessage();
+            $retorno = -1;
+        }
+
+        return $retorno;
+    }
+    /*
+    * Altera senha do usuario rebendo como parametro senha e id do usuario
+    * 
+    */
+    public function alterarSenha($senha,$idusuario){
+
+        $retorno = 0;
+        
+        # Faz conex�o
+        $conexao = new conexaoBanco();
+        $conexao->conectar();
+        
+        # Executa comando SQL
+        $stmt = $conexao->pdo->prepare("UPDATE usuario SET senha = ? WHERE idusuario = ?");
+
+        # Parametros
+        $stmt->bindValue(1,$senha);
+        $stmt->bindValue(2,$idusuario);
 
         try{
             $retorno = $stmt->execute();
@@ -56,22 +72,25 @@ class usuarioDAO{
         $conexao->conectar();
 
         try{
-            $stmt = $conexao->pdo->prepare('INSERT INTO usuario (login, nome, matricula, senha, setor_idsetor, tipousuario_idtipousuario, idusuario) VALUES (?,?,?,?,?,?,?)');
+            $stmt = $conexao->pdo->prepare('INSERT INTO usuario (login, nome, matricula, senha,
+                setor_idsetor, tipousuario_idtipousuario) VALUES (?,?,?,?,?,?)');
 
 
 
 			$stmt->bindValue(1,$dados->getLogin());
 			$stmt->bindValue(2,$dados->getNome());
-			$stmt->bindValue(3,$dados->getMatricula());
+			$stmt->bindValue(3,'00');
 			$stmt->bindValue(4,$dados->getSenha());
 			$stmt->bindValue(5,$dados->getSetor_idsetor());
 			$stmt->bindValue(6,$dados->getTipousuario_idtipousuario());
-			$stmt->bindValue(7,$dados->getIdusuario());
+			
 
-            $retorno = $stmt->execute();
+             $stmt->execute();
+             $retorno = TRUE;
         }
         catch ( PDOException $ex ){  
             echo 'Erro: ' . $ex->getMessage(); 
+            $retorno = FALSE; 
         }
 
         return $retorno;
@@ -132,10 +151,10 @@ class usuarioDAO{
 	    $conexao->conectar();
 
 	    # Executa comando SQL
-	    $stmt = $conexao->pdo->prepare('SELECT login, nome, matricula, senha, setor_idsetor, tipousuario_idtipousuario, idusuario FROM usuario WHERE idusuario = ? ');
+	    $stmt = $conexao->pdo->prepare('SELECT login, nome, matricula, senha, setor_idsetor, tipousuario_idtipousuario, idusuario FROM usuario WHERE login = ? OR idusuario = ? ');
 
 	    # Passando os valores a serem usados
-    	$dados = array($pk);
+    	$dados = array($pk,$pk);
     	$stmt->execute($dados);
     	$retorno = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -166,7 +185,7 @@ class usuarioDAO{
     	$conexao->conectar();
 
     	# Executa comando SQL
-    	$stmt = $conexao->pdo->prepare('SELECT login, nome, matricula, senha, setor_idsetor, tipousuario_idtipousuario, idusuario FROM usuario ORDER BY idusuario DESC');
+    	$stmt = $conexao->pdo->prepare('SELECT login, nome, matricula, senha,(SELECT nome FROM setor WHERE idsetor = setor_idsetor) as setor, tipousuario_idtipousuario, idusuario FROM usuario ORDER BY idusuario DESC');
 
     	// Executa Query
     	$stmt->execute();
@@ -184,7 +203,7 @@ class usuarioDAO{
 		    $usuarioClass->setNome($row['nome']);
 		    $usuarioClass->setMatricula($row['matricula']);
 		    $usuarioClass->setSenha($row['senha']);
-		    $usuarioClass->setSetor_idsetor($row['setor_idsetor']);
+		    $usuarioClass->setSetor_idsetor($row['setor']);
 		    $usuarioClass->setTipousuario_idtipousuario($row['tipousuario_idtipousuario']);
 		    $usuarioClass->setIdusuario($row['idusuario']);
 

@@ -25,14 +25,59 @@
             header("Location: ?control={$control}&action={$action}");
       }
       else{
-         $erro = 'O setor deve ser informado!';
+         $_SESSION['session']['acoes']['msg'] = 'O setor deve ser informado!';
           //header('Location: ?action=cliente');
       }
           
   }  
-  if(isset($erro))
-      $erro = $erro!=NULL ? $erro :'' ;
-      echo $erro;
+  
+               
+  if(isset($_REQUEST['criarUsu'])){
+      if(isset($_REQUEST['nome'])?($_REQUEST['nome']== NULL ? FALSE :TRUE):FALSE){
+        if(isset($_REQUEST['login'])?($_REQUEST['login']== NULL ? FALSE :TRUE):FALSE){
+           if(isset($_REQUEST['senha'])?($_REQUEST['senha']== NULL ? FALSE :TRUE):FALSE){
+                $adm =  isset($_REQUEST['adm'])?($_REQUEST['adm']== '1' ? 1 : 0): 0;
+                $perm = array();
+                $i=0;
+                if(isset($_REQUEST['menu'])){
+                    foreach ($_REQUEST['menu'] as $ls){
+                        $perm[$i]=$ls;
+                        $i++;
+                    }
+                } 
+              $control = 'login';
+              $action  = 'didi';
+              $nome   = $_REQUEST['nome'];
+              $login = $_REQUEST['login'];
+              $senha = $_REQUEST['senha'];
+              $setor = $_REQUEST['setorCadas'];
+              
+              $_vals = array(           'nome'=>$nome,
+                                        'login'=>$login,
+                                        'senha'=>$senha,    
+                                        'setor'=>$setor,
+                                        'tipousu'=>$adm,
+                                        'permissao'=>$perm
+                                 );      
+              $_SESSION['session']['acoes'] = $_vals;
+                    
+            header("Location: ?control={$control}&action={$action}");
+               // $_SESSION['session']['acoes']['msg'] = $adm;
+                
+             }
+             else{
+                $_SESSION['session']['acoes']['msg'] = 'O campo senha não foi informado!'; 
+                }
+          }
+        else{
+             $_SESSION['session']['acoes']['msg'] = 'O campo login não foi informado!'; 
+        }   
+      }
+      else{
+         $_SESSION['session']['acoes']['msg'] = 'O campo nome não foi informado!'; 
+      }
+   }
+
   
 ?>
 <!--
@@ -109,28 +154,90 @@
 </div>
 
 <div class="modulo">
-	<h3>Listar usuários</h3>	
+	<h3>Listar usuários</h3>   
+        <table cellpadding="0" cellspacing="0" border="0" class="display" id="usuario">
+	<thead>
+		<tr>
+			<th>Login</th>
+			<th>Nome</th>
+			<th>Setor</th>
+                        <th>Selecionar</th>
+		</tr>
+	</thead>
+        <tbody>
+        <form id="" action="" method="post">
+        <?php $usuario = new usuarioDAO();
+              $ret = $usuario->ObterPorTodos();  
+              
+              foreach ($ret as $ls){
+                  echo "<tr class='gradeA' onClick='clicado(this);' 
+                      onMouseOver='selecionado(this);' onMouseOut='n_selecionado(this);'>"
+                      ."<td>{$ls->getLogin()}</td>"
+                      ."<td>{$ls->getNome()}</td>"
+                      ."<td>{$ls->getSetor_idsetor()}</td>"
+                      ."<td class='center'>
+                       <input type='submit' name='editarUsu' value='Editar' />
+                       <input type='submit' name='deletarUsu' value='Deletar' /></td>"
+                      ."</tr>"
+                  ;
+              }
+        ?>
+        </form>
+      </tbody>
+</table>
+       
 </div>
 <div class="modulo">
 	<h3>Inserir usuário</h3>	
-	<form id="">
+        <form id="" method="post" action="">
 		<p>
 			<strong>Login</strong><br />
-			<input type="text" value="" />
+                        <input type="text" name="login" value="" />
 		</p>
 		<p>
 			<strong>Nome</strong><br />
-			<input type="text" value="" />
+                        <input type="text" name="nome" value="" />
 		</p>
 		<p>
-			<strong>E-mail</strong><br />
-			<input type="text" value="" />
+			<strong>Senha</strong><br />
+                        <input type="password" name="senha" value="" />
 		</p>
+                <p>
+                    <strong>Selecione o setor</strong><br />
+                    <select name="setorCadas">
+				<option value="" selected>Selecione o setor</option>
+				<?php
+                                    $listaSetor = new setorDAO();
+                                    $list = $listaSetor->ObterPorTodos();
+                                    foreach ($list as $ls){
+                                        echo "<option value='{$ls->getIdsetor()}'>{$ls->getNome()}</option>";
+                                    }
+                                    
+                                ?>
+			</select>
+                </p>
 		<p>
-			<input type="checkbox" value="administrador">Este usuário é administrador?<br>
+                    <input type="checkbox" name="adm" value="1">Este usuário é administrador?<br>
 		</p>
+                <p>
+                    <strong>Selecione as páginas que o usuário poderá ter acesso:</strong>
+                </p>
+                <?php
+                    if (isset($val)) {
+                     $i=1;
+                       foreach ($val as $ls){
+                       echo "<p>
+                              <input type='checkbox' name='menu[]' value='{$ls->getIdmenu()}'>{$ls->getNome()}<br>
+                            </p>";
+                          $i++;
+                         }
+                      }
+                   else {
+                        echo 'Falha no carregamento do menu!';
+                        }
+                ?>
 		<p>
-			<input type="submit" value="Inserir usuário" />
+                    <input type="submit" name="criarUsu" value="Inserir usuário" />
 		</p>
 	</form>
 </div>
