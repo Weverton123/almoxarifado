@@ -6,9 +6,7 @@
   require_once (BASEMODELDAO.'setorDAO.php');
   
    session_start();
-   if(isset($_SESSION['session']['acoes']['msg'])){
-       $erro = $_SESSION['session']['acoes']['msg'];
-   }
+   
   if(isset($_REQUEST['inserts'])){
       
       if(isset($_POST['setor'])? ($_POST['setor'] !=NULL ? TRUE : FALSE):FALSE){
@@ -46,12 +44,12 @@
                     }
                 } 
               $control = 'login';
-              $action  = 'didi';
+              $action  = 'cadastrar';
               $nome   = $_REQUEST['nome'];
               $login = $_REQUEST['login'];
               $senha = $_REQUEST['senha'];
               $setor = $_REQUEST['setorCadas'];
-              
+              /*
               $_vals = array(           'nome'=>$nome,
                                         'login'=>$login,
                                         'senha'=>$senha,    
@@ -63,7 +61,21 @@
                     
             header("Location: ?control={$control}&action={$action}");
                // $_SESSION['session']['acoes']['msg'] = $adm;
-                
+                */
+              $usu = new usuarioClass();
+              $usu->setLogin($login);
+              $usu->setNome($nome);
+              $usu->setSenha($senha);
+              $usu->setSetor_idsetor($setor);
+              $usu->setTipousuario_idtipousuario($adm);
+              $usus = new usuarioDAO();
+              $ret = $usus->incluir($usu);
+              if ($ret){
+                  echo 'gravado com sucesso';
+              }
+              else {
+                  echo 'falhaSs';
+              }
              }
              else{
                 $_SESSION['session']['acoes']['msg'] = 'O campo senha não foi informado!'; 
@@ -112,7 +124,7 @@
 		</p>
 	</form>
 </div>
-
+<!--
 <div class="modulo">
 	<h3>Editar setor</h3>
 	<form id="">
@@ -152,7 +164,7 @@
 		</p>
 	</form>
 </div>
-
+-->
 <div class="modulo">
 	<h3>Listar usuários</h3>   
         <table cellpadding="0" cellspacing="0" border="0" class="display" id="usuario">
@@ -241,7 +253,7 @@
 		</p>
 	</form>
 </div>
-
+<!--
 <div class="modulo">
 	<h3>Editar usuário</h3>	
 	<form>
@@ -315,7 +327,7 @@
 		</p>
 	</form>
 </div>
-
+-->
 <!--
 	Fim de conteúdo
 -->

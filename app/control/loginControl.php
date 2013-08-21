@@ -18,9 +18,6 @@ require_once (BASEMODELDAO.'menuDAO.php');//metodos CRUD do menu
 
 class login {   
 
-    public function didi(){
-        echo 'IAAAEEEE!';
-    }
 
     public function validar(){
         
@@ -93,7 +90,7 @@ class login {
                   $_SESSION['session']['acoes']['msg'] = 'Cadastro realizado com sucesso!';
             }
             else {
-                $_SESSION['session']['acoes']['msg'] = 'Falha ao cadastrar usuário!';
+               // $_SESSION['session']['acoes']['msg'] = 'Falha ao cadastrar usuário!';
             }
             
         }

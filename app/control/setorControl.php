@@ -20,7 +20,7 @@ class setor {
 
     public function inserir(){
       $action  = 'cliente';   
-      if($_SESSION['session']['acoes']['setor']){
+      if(isset($_SESSION['session']['acoes']['setor'])){
       $vars =  $_SESSION['session']['acoes']['setor'];
      
       $setorMod = new setorClass();
@@ -37,24 +37,16 @@ class setor {
             }
             else {
                 $_SESSION['session']['acoes']['msg'] = 'Setor cadastrado com sucesso!';
-            }
-         
-          header("Location: ?action={$action}");  
+            }          
       }
        else {
-          
-         
-           
-          $_SESSION['session']['acoes']['msg'] = 'Setor ja existe';
-          
-          header("Location: ?action={$action}");
+                     
+          $_SESSION['session']['acoes']['msg'] = 'Setor ja existe';         
       }
         //
       }
-        else{
-            echo 'FALHA NA CRIAÇÃO DA SESSÃO!'; exit('CONTATE O ADMINISTRADOR!');
-        }
-       //header('Location: ?action=cliente');  
+      
+       header('Location: ?action=cliente');  
     }
     
     public function buscar(){

@@ -71,26 +71,24 @@ class usuarioDAO{
         $conexao = new conexaoBanco();
         $conexao->conectar();
 
-        try{
-            $stmt = $conexao->pdo->prepare('INSERT INTO usuario (login, nome, matricula, senha,
-                setor_idsetor, tipousuario_idtipousuario) VALUES (?,?,?,?,?,?)');
+        
+            $stmt = $conexao->pdo->prepare("INSERT INTO usuario (login, nome, senha,
+                setor_idsetor, tipousuario_idtipousuario) VALUES ('?','?','?','?','?')");
 
 
 
 			$stmt->bindValue(1,$dados->getLogin());
 			$stmt->bindValue(2,$dados->getNome());
-			$stmt->bindValue(3,'00');
-			$stmt->bindValue(4,$dados->getSenha());
-			$stmt->bindValue(5,$dados->getSetor_idsetor());
-			$stmt->bindValue(6,$dados->getTipousuario_idtipousuario());
-			
+			$stmt->bindValue(3,$dados->getSenha());
+			$stmt->bindValue(4,$dados->getSetor_idsetor());
+			$stmt->bindValue(5,$dados->getTipousuario_idtipousuario());
+	try{		
 
-             $stmt->execute();
-             $retorno = TRUE;
+            $retorno = $stmt->execute();
+             
         }
         catch ( PDOException $ex ){  
             echo 'Erro: ' . $ex->getMessage(); 
-            $retorno = FALSE; 
         }
 
         return $retorno;
