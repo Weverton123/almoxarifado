@@ -18,10 +18,14 @@ session_start();
           foreach ($menu as $ls){
               if($ls->getLink()==$_REQUEST['action']){//verifica se o usuario logado tem acesso a pagina requisitada
                   $acesso=TRUE;
-                  break;
-              }
+                }
+              
           }
-          if(!$acesso){
+          if(!$acesso && $_REQUEST['action']=='minhaarea'){
+              
+              redirecionar('?action=index');
+          }
+          else if(!$acesso) {
               redirecionar('?action=minhaarea');
           }
               

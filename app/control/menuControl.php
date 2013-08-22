@@ -31,8 +31,13 @@ class menu extends controller {
          $vars = unserialize($vars);//disserializo o objeto armazenado na sessão
          $menu = new menuClass();//crio um objeto para armazenar o objeto trazido pela sessão
          $menu = $vars;//armazeno na variavel $menu o objeto trazido pela sessão
-         
-         $this->res = $menu;
+         $menulimitado = array();
+         $limit = count($menu)>= 3 ? 3 : count($menu);//limita a quantidade de abas e caso o limite seja menor 
+         //entao ele será o limit
+         for($i=0; $i < $limit ;$i++){
+             $menulimitado[$i] = $menu[$i];
+         }
+         $this->res = $menulimitado;
            
           
         }
@@ -86,12 +91,16 @@ class menu extends controller {
     public function requisicoes(){
         echo 'FALTA CRIAR';
     }
+    public function editarusu(){
+        $this->view('alterarusu', $this->res);
+    }
+
     public function logoff(){
         session_start();
         session_unset('session');
         
         $_SESSION['erro'] = 'Logoff realizado com sucesso!';
-        header('Location: ?action=index');
+        redirecionar('?action=index');
     }
 }
 

@@ -1,8 +1,13 @@
 ﻿<?php if(!defined('BASEPATH')) exit('Falha no carregamento do BASEPATH!');
   //Ativa o Buffer que armazena o conteúdo principal da página
-  ob_start();
+
   seguranca_arq();
+  ob_start();
+  
   session_start();
+  
+  
+  
   //É utilizada uma outra forma de validação do formulário pelo php, apenas para garantir que a nova senha
   //será realmente a informada
   if(isset($_REQUEST['alterarS'])){
@@ -59,6 +64,7 @@
       }
           
   }
+
 ?>
 <!--
 	Início de conteúdo
@@ -67,7 +73,7 @@
 
 <div class="modulo">
 	<h3>Meus dados</h3>
-        <?php if(isset($_SESSION['session']['usuario'])){
+        <?php  if(isset($_SESSION['session']['usuario'])){
      
                 $usu = $_SESSION['session']['usuario'];
                 $usu = unserialize($usu);
@@ -75,20 +81,20 @@
                 $usuario = $usu;
             ?>
 	<p>
-            <strong>Login:</strong>  <?=$usuario->getLogin() ?> 
+            <strong>Login:</strong>  <?= $usuario->getLogin() ?> 
 	</p>
 	<p>
-            <strong>Nome:</strong>   <?=$usuario->getNome() ?>
+            <strong>Nome:</strong>   <?= $usuario->getNome() ?>
 	</p>
-        <!--
-	<p>
-		<strong>E-mail:</strong>
-	</p>
-        -->	
+        
 	<p>
             <strong>Setor:</strong>  <?= $usuario->getSetor_idsetor() ?>
 	</p>
-        <?php } ?>
+        <?php } 
+            else {
+                echo 'Falha no carregamento do usuario!';
+            }
+        ?>
 </div>
 		
 <div class="modulo">
@@ -151,4 +157,4 @@
   // Descarta o conteudo do Buffer
   ob_end_clean(); 
   //Include com o Template
-  include(BASEVIEW."base.php");
+  include_once(BASEVIEW."base.php");

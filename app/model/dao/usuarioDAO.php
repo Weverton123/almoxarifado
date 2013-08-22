@@ -7,6 +7,32 @@ require_once (BASEMODELCLASS.'usuarioClass.php');
 
 class usuarioDAO{
 
+    public function alterarNome($nome,$idusuario){
+
+        $retorno = 0;
+        
+        # Faz conex�o
+        $conexao = new conexaoBanco();
+        $conexao->conectar();
+        
+        # Executa comando SQL
+        $stmt = $conexao->pdo->prepare("UPDATE usuario SET nome = ? WHERE idusuario = ?");
+
+        # Parametros
+        $stmt->bindValue(1,$nome);
+        $stmt->bindValue(2,$idusuario);
+
+        try{
+            $retorno = $stmt->execute();
+        }
+        catch (PDOException $e) {
+            echo 'Erro: '.$e->getMessage();
+            $retorno = -1;
+        }
+
+        return $retorno;
+    }
+    
     public function alterarLogin($login,$idusuario){
 
         $retorno = 0;
@@ -66,22 +92,23 @@ class usuarioDAO{
     * Insere dados recebendo valores via par�metro
     * ---------------------------------------------
     */
-    public function incluir($dados){
+    public function incluir($login,$nome,$senha,$idsetor,$idtipousuario){
+   
         # Faz conex�o
         $conexao = new conexaoBanco();
         $conexao->conectar();
 
         
             $stmt = $conexao->pdo->prepare("INSERT INTO usuario (login, nome, senha,
-                setor_idsetor, tipousuario_idtipousuario) VALUES ('?','?','?','?','?')");
+                setor_idsetor, tipousuario_idtipousuario) VALUES (?,?,?,?,?)");
 
 
 
-			$stmt->bindValue(1,$dados->getLogin());
-			$stmt->bindValue(2,$dados->getNome());
-			$stmt->bindValue(3,$dados->getSenha());
-			$stmt->bindValue(4,$dados->getSetor_idsetor());
-			$stmt->bindValue(5,$dados->getTipousuario_idtipousuario());
+			$stmt->bindValue(1,$login);
+			$stmt->bindValue(2,$nome);
+			$stmt->bindValue(3,$senha);
+			$stmt->bindValue(4,$idsetor);
+			$stmt->bindValue(5,$idtipousuario);
 	try{		
 
             $retorno = $stmt->execute();
@@ -149,29 +176,34 @@ class usuarioDAO{
 	    $conexao->conectar();
 
 	    # Executa comando SQL
-	    $stmt = $conexao->pdo->prepare('SELECT login, nome, matricula, senha, setor_idsetor, tipousuario_idtipousuario, idusuario FROM usuario WHERE login = ? OR idusuario = ? ');
+	    $stmt = $conexao->pdo->prepare("SELECT login, nome, matricula, senha, setor_idsetor,
+                tipousuario_idtipousuario, idusuario FROM usuario WHERE login = ? OR idusuario = ? ");
 
 	    # Passando os valores a serem usados
     	$dados = array($pk,$pk);
     	$stmt->execute($dados);
     	$retorno = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+    	if($retorno>0){
+            foreach( $retorno as $row ){
+                #Inst�ncia da entidade
+                $usuarioClass = new usuarioClass();
 
-    	#Inst�ncia da entidade
-    	$usuarioClass = new usuarioClass();
-
-    	foreach( $retorno as $row ){
-
-    		#Atribui valores
-		    $usuarioClass->setLogin($row['login']);
-		    $usuarioClass->setNome($row['nome']);
-		    $usuarioClass->setMatricula($row['matricula']);
-		    $usuarioClass->setSenha($row['senha']);
-		    $usuarioClass->setSetor_idsetor($row['setor_idsetor']);
-		    $usuarioClass->setTipousuario_idtipousuario($row['tipousuario_idtipousuario']);
-		    $usuarioClass->setIdusuario($row['idusuario']);
-    	}
-
-    	return $usuarioClass;
+                    #Atribui valores
+                        $usuarioClass->setLogin($row['login']);
+                        $usuarioClass->setNome($row['nome']);
+                        $usuarioClass->setMatricula($row['matricula']);
+                        $usuarioClass->setSenha($row['senha']);
+                        $usuarioClass->setSetor_idsetor($row['setor_idsetor']);
+                        $usuarioClass->setTipousuario_idtipousuario($row['tipousuario_idtipousuario']);
+                        $usuarioClass->setIdusuario($row['idusuario']);
+            }
+            return $usuarioClass;
+        }
+        else {
+            return FALSE;
+        }
+        
     }
     /*
     * Obtem todos

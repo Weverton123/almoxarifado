@@ -66,27 +66,17 @@ and open the template in the editor.
 			</div>
 		</div>
 		<div id="site_content">
-			<!--<div id="sidebar_container">
-				<img class="paperclip" src="style/paperclip.png" alt="paperclip" />
-				<div class="sidebar">
-					<h3>T&iacute;tulo da not&iacute;cia</h3>
-					<h4>Subt&iacute;tulo da not&iacute;cia</h4>
-					<h5>Data da informa&ccedil;&atilde;o</h5>
-					<p>Conte&uacute;do com alguma not&iacute;cia ou alguma informa&ccedil;&atilde;o.</p>
-				</div>
-			</div>-->
 			<div id="content">
                                 <!-- Área para mensagem retornada de erro ou aviso  -->
                                 <?php
-                                    if(isset($_SESSION['session']['msg'])) echo $_SESSION['session']['msg'];
-                                    else if(isset($_SESSION['session']['acoes']['msg']))
-                                        echo $_SESSION['session']['acoes']['msg'];
-                                   
-                                ?>
-				<!-- inserir conteudo da pagina aqui -->
-				<?php
-					if(isset($page)) echo $page; 
-						else echo $page = 'NENHUMA PÁGINA FOI CARREGADA!'; 
+             if(isset($_SESSION['session']['msg'])) echo $_SESSION['session']['msg'];
+                                    
+             else if(isset($_SESSION['session']['acoes']['msg'])) echo $_SESSION['session']['acoes']['msg'];
+                                
+                                
+				#<!-- inserir conteudo da pagina aqui -->
+                                  if(isset($page)) echo $page; 
+						else echo 'NENHUMA PÁGINA FOI CARREGADA!'; 
 				?>
 			</div>
 		</div>

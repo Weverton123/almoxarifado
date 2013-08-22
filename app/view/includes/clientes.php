@@ -6,6 +6,9 @@
   require_once (BASEMODELDAO.'setorDAO.php');
   
    session_start();
+ if(isset($_SESSION['session']['acoes']['idusuario'])){
+     unset($_SESSION['session']['acoes']['idusuario']);//limpa sessão da memoria
+ }
    
   if(isset($_REQUEST['inserts'])){
       
@@ -49,7 +52,7 @@
               $login = $_REQUEST['login'];
               $senha = $_REQUEST['senha'];
               $setor = $_REQUEST['setorCadas'];
-              /*
+              
               $_vals = array(           'nome'=>$nome,
                                         'login'=>$login,
                                         'senha'=>$senha,    
@@ -59,23 +62,9 @@
                                  );      
               $_SESSION['session']['acoes'] = $_vals;
                     
-            header("Location: ?control={$control}&action={$action}");
+              redirecionar("?control={$control}&action={$action}");
                // $_SESSION['session']['acoes']['msg'] = $adm;
-                */
-              $usu = new usuarioClass();
-              $usu->setLogin($login);
-              $usu->setNome($nome);
-              $usu->setSenha($senha);
-              $usu->setSetor_idsetor($setor);
-              $usu->setTipousuario_idtipousuario($adm);
-              $usus = new usuarioDAO();
-              $ret = $usus->incluir($usu);
-              if ($ret){
-                  echo 'gravado com sucesso';
-              }
-              else {
-                  echo 'falhaSs';
-              }
+                
              }
              else{
                 $_SESSION['session']['acoes']['msg'] = 'O campo senha não foi informado!'; 
@@ -90,7 +79,28 @@
       }
    }
 
-  
+   
+   if(isset($_REQUEST['editarUsu'])){
+      $id = $_REQUEST['editarUsu'];
+       $action  = 'editarusu';
+              
+       $_vals = array( 'idusuario' => $id );
+              
+       $_SESSION['session']['acoes'] = $_vals;
+                    
+       header("Location: ?action={$action}");
+   }
+   if(isset($_REQUEST['deletarUsu'])){
+       $id = $_REQUEST['deletarUsu'];
+       $control = 'login';
+       $action  = 'deletar';
+              
+       $_vals = array( 'idusuario' => $id );
+       
+       
+       redirecionar("?action={$action}");
+   }  
+   
 ?>
 <!--
 	Início de conteúdo
@@ -177,24 +187,25 @@
 		</tr>
 	</thead>
         <tbody>
-        <form id="" action="" method="post">
+        
         <?php $usuario = new usuarioDAO();
               $ret = $usuario->ObterPorTodos();  
-              
               foreach ($ret as $ls){
-                  echo "<tr class='gradeA' onClick='clicado(this);' 
+                  echo 
+                      "<tr class='gradeA' onClick='clicado(this);' 
                       onMouseOver='selecionado(this);' onMouseOut='n_selecionado(this);'>"
                       ."<td>{$ls->getLogin()}</td>"
                       ."<td>{$ls->getNome()}</td>"
                       ."<td>{$ls->getSetor_idsetor()}</td>"
                       ."<td class='center'>
-                       <input type='submit' name='editarUsu' value='Editar' />
-                       <input type='submit' name='deletarUsu' value='Deletar' /></td>"
+                       <a href='?editarUsu={$ls->getIdusuario()}&action=cliente' >Editar</a>
+                       <a href='?deletarUsu={$ls->getIdusuario()}&action=cliente' >Deletar</a></td>"
                       ."</tr>"
+                              
                   ;
               }
         ?>
-        </form>
+         
       </tbody>
 </table>
        
@@ -235,18 +246,21 @@
                     <strong>Selecione as páginas que o usuário poderá ter acesso:</strong>
                 </p>
                 <?php
-                    if (isset($val)) {
-                     $i=1;
-                       foreach ($val as $ls){
+                
+                    
+                     
+                    $vars = $_SESSION['session']['logado'];
+                    //print_r($vars);
+                    $vars = unserialize($vars);//disserializo o objeto armazenado na sessão
+                    $menu = new menuClass();//crio um objeto para armazenar o objeto trazido pela sessão
+                    $menu = $vars;//armazeno na variavel $menu o objeto trazido pela sessão
+                    
+                    foreach ($menu as $ls){
                        echo "<p>
                               <input type='checkbox' name='menu[]' value='{$ls->getIdmenu()}'>{$ls->getNome()}<br>
                             </p>";
-                          $i++;
                          }
-                      }
-                   else {
-                        echo 'Falha no carregamento do menu!';
-                        }
+                     
                 ?>
 		<p>
                     <input type="submit" name="criarUsu" value="Inserir usuário" />
@@ -254,61 +268,6 @@
 	</form>
 </div>
 <!--
-<div class="modulo">
-	<h3>Editar usuário</h3>	
-	<form>
-		<p>
-			<strong>Selecione o usuário</strong><br />
-			<select>
-				<option value="" selected></option>
-				<option value="1">Marcel Gleidson Bezerra de Freitas</option>
-				<option value="9">Jânio César</option>
-				<option value="2">Márcio Peixoto</option>
-			</select>
-		</p>
-		<p>
-			<strong>Login atual:</strong> marcel
-		</p>
-		<p>
-			<strong>Nome atual:</strong> Marcel Gleidson Bezerra de Freitas
-		</p>
-		<p>
-			<strong>E-mail atual:</strong> marcel@bczm.ufrn.br
-		</p>
-		<p>
-			<strong>É administrador?</strong> Não
-		</p>
-		<p>
-			<strong>Novo login</strong><br />
-			<input type="text" value="" />
-		</p>
-		<p>
-			<input type="submit" value="Alterar login" />
-		</p>
-		<p>
-			<strong>Novo nome</strong><br />
-			<input type="text" value="" />
-		</p>
-		<p>
-			<input type="submit" value="Alterar nome" />
-		</p>
-		<p>
-			<strong>Novo e-mail</strong><br />
-			<input type="text" value="" />
-		</p>
-		<p>
-			<input type="submit" value="Alterar e-mail" />
-		</p>
-		<p>
-			<strong>É administrador?</strong><br />
-			<input type="radio" value="sim">Sim<br />
-			<input type="radio" value="nao">Não
-		</p>
-		<p>
-			<input type="submit" value="Alterar administração" />
-		</p>
-	</form>
-</div>
 
 <div class="modulo">
 	<h3>Remover usuário</h3>

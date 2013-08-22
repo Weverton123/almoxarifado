@@ -64,6 +64,7 @@ class login {
        
     
     }
+  
     public function cadastrar(){
         print_r($_SESSION['session']['acoes']);
         $usu = new usuarioClass();
@@ -80,7 +81,8 @@ class login {
             $_SESSION['session']['acoes']['msg'] = 'Login já cadastrado!';
         }
         else {
-            $ret = $usuario->incluir($usu);
+            //$usuario->incluir($login, $nome, $senha, $idsetor, $idtipousuario);
+            $ret = $usuario->incluir($usu->getLogin(), $usu->getNome(), $usu->getSenha(), $usu->getSetor_idsetor(), $usu->getTipousuario_idtipousuario());
             if($ret){//se o usuario for cadastrador com sucesso insiro as permissões de acesso
                 $perm = new permissaoDAO();
                 $listPerm = $_SESSION['session']['acoes']['permissao'];
@@ -90,7 +92,7 @@ class login {
                   $_SESSION['session']['acoes']['msg'] = 'Cadastro realizado com sucesso!';
             }
             else {
-               // $_SESSION['session']['acoes']['msg'] = 'Falha ao cadastrar usuário!';
+               $_SESSION['session']['acoes']['msg'] = 'Falha ao cadastrar usuário!';
             }
             
         }
@@ -98,6 +100,7 @@ class login {
         header('Location: ?action=cliente');
         
      }
+   
     public function alterarsenha(){
         $usuario = new usuarioDAO();
         
@@ -124,35 +127,74 @@ class login {
         else {
             $_SESSION['session']['acoes']['msg']='Senha inválida!';
         }
-        header('Location: ?action=minhaarea');
+        redirecionar('?action=minhaarea');
         
     }
+   
     public function alterarlogin(){
+        $flag = 0;
+        
         $usuario = new usuarioDAO();
         
         $usu = new usuarioClass();
         $usu = unserialize($_SESSION['session']['usuario']);
         
         $alterar = $_SESSION['session']['acoes'] ;   
+        if(isset($alterar['senha'])){
         
         $ret = $usuario->VerificaUsu($usu->getLogin(), $alterar['senha']);
-          
-        if($ret){        
-            $ret = $usuario->alterarLogin($alterar['newlogin'], $ret->getIdusuario());
-           
-            if($ret > 0){
-                $usu->setLogin($alterar['newlogin']);
-              $_SESSION['session']['usuario'] = serialize($usu);  
-              $_SESSION['session']['acoes']['msg']='Login alterado com sucesso!';
+        $flag = 1;
+        
+            if($ret){        
+                $ret = $usuario->alterarLogin($alterar['newlogin'], $ret->getIdusuario());
+
+                if($ret > 0){
+
+                  $usu->setLogin($alterar['newlogin']);
+                  $_SESSION['session']['usuario'] = serialize($usu);
+                  $_SESSION['session']['acoes']['msg']='Login alterado com sucesso!';
+                }
+                else{
+                  $_SESSION['session']['acoes']['msg']='Falha na alteração!';  
+                }
             }
-            else{
-              $_SESSION['session']['acoes']['msg']='Falha na alteração!';  
+            else {
+            $_SESSION['session']['acoes']['msg']='Senha inválida!';
             }
         }
         else {
-        $_SESSION['session']['acoes']['msg']='Senha inválida!';
+            
+              $ret = $usuario->alterarLogin($alterar['newlogin'],$alterar['idusu']);
+                if($ret > 0){
+                    
+                 $_SESSION['session']['acoes']['msg']='Login alterado com sucesso!';
+                }
+                else{
+                    $_SESSION['session']['acoes']['msg']='Falha na alteração!';  
+                }  
+            
         }
-        header('Location: ?action=minhaarea');
+        
+        if($flag==1){
+            //echo 'flag = 1';
+            redirecionar('?action=minhaarea');
+        }
+        else{
+            
+            //echo  $alterar['idusu'].$alterar['newlogin'];
+            redirecionar('?action=cliente');
+        }
+    }
+    
+    public function alterarperm(){
+     $perm = new permissaoDAO();
+                $listPerm = $_SESSION['session']['acoes']['permissao'];
+                $iduser   = $_SESSION['session']['acoes']['idusuario'];
+                    foreach ($listPerm as $ls){
+                        $perm->incluir($ls,$iduser);
+                    }
+                  $_SESSION['session']['acoes']['msg'] = 'Alterações realizada com sucesso!';
+                  redirecionar('?action=cliente');
     }
 }
 
