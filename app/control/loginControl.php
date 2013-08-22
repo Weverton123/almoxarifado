@@ -186,6 +186,60 @@ class login {
         }
     }
     
+    public function alterarnome(){
+        $flag = 0;
+        
+        $usuario = new usuarioDAO();
+        
+        $usu = new usuarioClass();
+        
+        $alterar = $_SESSION['session']['acoes'] ;   
+        if(isset($alterar['senha'])){
+        
+        $ret = $usuario->VerificaUsu($usu->getLogin(), $alterar['senha']);
+        $flag = 1;
+        
+            if($ret){        
+                $ret = $usuario->alterarLogin($alterar['newlogin'], $ret->getIdusuario());
+
+                if($ret > 0){
+
+                  $usu->setLogin($alterar['newlogin']);
+                  $_SESSION['session']['usuario'] = serialize($usu);
+                  $_SESSION['session']['acoes']['msg']='Login alterado com sucesso!';
+                }
+                else{
+                  $_SESSION['session']['acoes']['msg']='Falha na alteração!';  
+                }
+            }
+            else {
+            $_SESSION['session']['acoes']['msg']='Senha inválida!';
+            }
+        }
+        else {
+            
+              $ret = $usuario->alterarNome($alterar['newnome'],$alterar['idusu']);
+                if($ret > 0){
+                    
+                 $_SESSION['session']['acoes']['msg']='Nome alterado com sucesso!';
+                }
+                else{
+                    $_SESSION['session']['acoes']['msg']='Falha na alteração!';  
+                }  
+            
+        }
+        
+        if($flag==1){
+            //echo 'flag = 1';
+            redirecionar('?action=minhaarea');
+        }
+        else{
+            
+            //echo  $alterar['idusu'].$alterar['newlogin'];
+            redirecionar('?action=cliente');
+        }
+    }
+
     public function alterarperm(){
      $perm = new permissaoDAO();
                 $listPerm = $_SESSION['session']['acoes']['permissao'];

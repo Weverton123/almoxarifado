@@ -40,13 +40,27 @@ session_start();
                        $perm[$i]=$ls;
                        $i++;
            }
-        $_vals = array('permissao'=> $perm,'idusuario'=> $_SESSION['session']['acoes']['idusuario']);
+        $_vals = array( 'permissao'=> $perm,
+                        'idusuario'=> $_SESSION['session']['acoes']['idusuario']);
          $_SESSION['session']['acoes'] = $_vals;
         redirecionar("?control={$control}&action={$action}");
                 
     }
     if(isset($_REQUEST['alterarN'])){//validação de formulário para alterar Nome
-        
+        if(isset($_REQUEST['newnome'])?($_REQUEST['newnome']== NULL? FALSE :TRUE):FALSE){
+          
+              $control = 'login';//controle no qual tem os metodos para login
+              $action = 'alterarnome';//ação
+              
+              $_vals = array( 'newnome' => $_REQUEST['newnome'],
+                              'idusu' => $_SESSION['session']['acoes']['idusuario']  
+                  );
+              $_SESSION['session']['acoes'] = $_vals;
+              redirecionar("?control={$control}&action={$action}");
+      }
+      else{
+          $_SESSION['session']['acoes']['msg'] = 'O campo nome não foi informado!';
+      }
     }
     if(isset($_REQUEST['alterarA'])){//validação de formulário para alterar adminitração
         
