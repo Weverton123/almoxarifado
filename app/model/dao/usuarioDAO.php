@@ -6,6 +6,7 @@ require_once (BASEMODELCLASS.'usuarioClass.php');
 
 
 class usuarioDAO{
+    
     public function alterarAdm($adm,$idusuario){
         
         $retorno = 0;

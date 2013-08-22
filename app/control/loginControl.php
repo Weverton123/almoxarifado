@@ -244,6 +244,8 @@ class login {
      $perm = new permissaoDAO();
                 $listPerm = $_SESSION['session']['acoes']['permissao'];
                 $iduser   = $_SESSION['session']['acoes']['idusuario'];
+                
+                    $perm->Deletar($iduser);
                     foreach ($listPerm as $ls){
                         $perm->incluir($ls,$iduser);
                     }
