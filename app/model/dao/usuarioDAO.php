@@ -6,6 +6,31 @@ require_once (BASEMODELCLASS.'usuarioClass.php');
 
 
 class usuarioDAO{
+    public function alterarAdm($adm,$idusuario){
+        
+        $retorno = 0;
+        
+        # Faz conex�o
+        $conexao = new conexaoBanco();
+        $conexao->conectar();
+        
+        # Executa comando SQL
+        $stmt = $conexao->pdo->prepare("UPDATE usuario SET tipousuario_idtipousuario = ? WHERE idusuario = ?");
+
+        # Parametros
+        $stmt->bindValue(1,$adm);
+        $stmt->bindValue(2,$idusuario);
+
+        try{
+            $retorno = $stmt->execute();
+        }
+        catch (PDOException $e) {
+            echo 'Erro: '.$e->getMessage();
+            $retorno = -1;
+        }
+
+        return $retorno;
+    }
 
     public function alterarNome($nome,$idusuario){
 

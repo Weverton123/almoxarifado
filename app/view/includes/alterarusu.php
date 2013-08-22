@@ -63,7 +63,16 @@ session_start();
       }
     }
     if(isset($_REQUEST['alterarA'])){//validação de formulário para alterar adminitração
-        
+          
+              $control = 'login';//controle no qual tem os metodos para login
+              $action = 'alteraradmin';//ação
+              
+              $_vals = array( 'newtipo' => $_REQUEST['tipo'],
+                              'idusu' => $_SESSION['session']['acoes']['idusuario']  
+                  );
+              $_SESSION['session']['acoes'] = $_vals;
+              redirecionar("?control={$control}&action={$action}");
+      
     }         
   
   ?>
@@ -111,12 +120,12 @@ session_start();
                 </form>
                 <form method="post">
 		<p>
+                    <?php 
+                        $check = $ret->getTipousuario_idtipousuario();
+                    ?>
 			<strong>É administrador?</strong><br />
-                        <select>
-                            <option></option>
-                            <option value="1">SIM</option>
-                            <option value="0">NÃO</option>
-                        </select>
+                        <INPUT TYPE="RADIO" NAME="tipo" <?=$check == 1 ? 'checked':'' ?> VALUE="1">SIM<br /> 
+                        <INPUT TYPE="RADIO" NAME="tipo" <?=$check != 1 ? 'checked':'' ?> VALUE="2">NÃO                            
 		</p>
 		<p>
                     <input type="submit" name="alterarA" value="Alterar administração" />

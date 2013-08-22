@@ -250,5 +250,16 @@ class login {
                   $_SESSION['session']['acoes']['msg'] = 'Alterações realizada com sucesso!';
                   redirecionar('?action=cliente');
     }
+    
+    public function alteraradmin(){
+     $tipo = new usuarioDAO();  
+             $adm = $_SESSION['session']['acoes']['newtipo'];
+             $iduser   = $_SESSION['session']['acoes']['idusu'];
+               
+     $tipo->alterarAdm($adm, $iduser);
+     $_SESSION['session']['acoes']['msg'] = 'Alterações realizada com sucesso!';
+     redirecionar('?action=cliente');
+     
+    }
 }
 
