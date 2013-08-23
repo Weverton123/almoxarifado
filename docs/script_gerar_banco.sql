@@ -37,7 +37,7 @@ DROP TABLE IF EXISTS `novoalmoxarifado`.`usuario` ;
 CREATE  TABLE IF NOT EXISTS `novoalmoxarifado`.`usuario` (
   `login` VARCHAR(20) NOT NULL ,
   `nome` VARCHAR(255) NOT NULL ,
-  `matricula` VARCHAR(45) NOT NULL ,
+  `email` VARCHAR(80) NOT NULL ,
   `senha` VARCHAR(20) NOT NULL ,
   `setor_idsetor` INT NOT NULL ,
   `tipousuario_idtipousuario` INT NOT NULL ,
