@@ -37,16 +37,16 @@ DROP TABLE IF EXISTS `novoalmoxarifado`.`usuario` ;
 CREATE  TABLE IF NOT EXISTS `novoalmoxarifado`.`usuario` (
   `login` VARCHAR(20) NOT NULL ,
   `nome` VARCHAR(255) NOT NULL ,
-  `email` VARCHAR(80) NOT NULL ,
+  `email` VARCHAR(90) NOT NULL ,
   `senha` VARCHAR(20) NOT NULL ,
   `setor_idsetor` INT NOT NULL ,
   `tipousuario_idtipousuario` INT NOT NULL ,
   `idusuario` INT NOT NULL AUTO_INCREMENT ,
-  UNIQUE INDEX `matricula_UNIQUE` (`matricula` ASC) ,
   INDEX `fk_usuario_setor` (`setor_idsetor` ASC) ,
   INDEX `fk_usuario_tipousuario1` (`tipousuario_idtipousuario` ASC) ,
   PRIMARY KEY (`idusuario`) ,
   UNIQUE INDEX `login_UNIQUE` (`login` ASC) ,
+  UNIQUE INDEX `matricula_UNIQUE` (`email` ASC) ,
   CONSTRAINT `fk_usuario_setor`
     FOREIGN KEY (`setor_idsetor` )
     REFERENCES `novoalmoxarifado`.`setor` (`idsetor` )
@@ -218,8 +218,10 @@ DROP TABLE IF EXISTS `novoalmoxarifado`.`menu` ;
 CREATE  TABLE IF NOT EXISTS `novoalmoxarifado`.`menu` (
   `idmenu` INT NOT NULL AUTO_INCREMENT ,
   `nome` VARCHAR(25) NOT NULL ,
+  `link` VARCHAR(40) NOT NULL ,
   PRIMARY KEY (`idmenu`) ,
-  UNIQUE INDEX `nome_UNIQUE` (`nome` ASC) )
+  UNIQUE INDEX `nome_UNIQUE` (`nome` ASC) ,
+  UNIQUE INDEX `link_UNIQUE` (`link` ASC) )
 ENGINE = InnoDB;
 
 
@@ -251,3 +253,13 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Data for table `novoalmoxarifado`.`tipousuario`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `novoalmoxarifado`;
+INSERT INTO `novoalmoxarifado`.`tipousuario` (`idtipousuario`, `tipo`) VALUES (NULL, 'Administrador');
+INSERT INTO `novoalmoxarifado`.`tipousuario` (`idtipousuario`, `tipo`) VALUES (NULL, 'Comum');
+
+COMMIT;
