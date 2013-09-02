@@ -85,7 +85,7 @@ class usuarioDAO{
         return $retorno;
     }
     /*
-    * Altera senha do usuario rebendo como parametro senha e id do usuario
+    * Altera senha do usuario recebendo como parametro senha e id do usuario
     * 
     */
     public function alterarSenha($senha,$idusuario){
@@ -164,7 +164,7 @@ class usuarioDAO{
     	$stmt->execute($dados);
     	$retorno = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-       if($retorno!=null){ 
+        if($retorno!=null){ 
            
     	#Inst�ncia da entidade
     	$usuarioClass = new usuarioClass();

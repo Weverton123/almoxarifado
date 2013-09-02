@@ -14,7 +14,7 @@ require_once (BASEMODELDAO.'menuDAO.php');//metodos CRUD do menu
  */
 
  //Inicio a sessão para poder utilizar a session com os valores das requisições
-    session_start();
+ session_start();
 
 class login {   
 
@@ -28,7 +28,7 @@ class login {
     
    //echo $var['user'];
     $usu = new usuarioDAO();
-        
+    
     $ret = $usu->VerificaUsu($var['user'], $var['senha']);
     
     if($ret){
@@ -54,12 +54,12 @@ class login {
                                     'usuario' => serialize($ret),
                                     'acoes'=>''
                                     );  
-         header('Location: ?action=minhaarea');
+           redirecionar('?action=minhaarea');
         }
      else{ 
         
            $_SESSION['session']['msg'] = 'Usuario inválido!';
-           header('Location: ?action=index');
+           redirecionar('?action=index');
      }
        
     

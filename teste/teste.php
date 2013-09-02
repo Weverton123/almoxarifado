@@ -1,4 +1,84 @@
 <?php
+/*
+ * UTILIZANDO CRUD GENERICO
+ */
+echo 'teste';
+
+if(file_exists('../system/configDB.php')){
+  require_once('../system/configDB.php');
+             if(file_exists('../app/model/crud.php')){
+               require_once('../app/model/crud.php');
+               
+               $crud = new crud();
+              
+               /*CONSULTAR*/
+               /*  $dados = array('(SELECT nome FROM menu WHERE idmenu = menu_idmenu) as menu');
+               
+               $res = $crud->consultar($dados, 'permissao','usuario_idusuario = 3');
+               foreach ($res as $row){
+                   echo '<br />'.$row['menu'];
+               }*/
+               /*FIM CONSULTA */
+               
+               /*DELETAR*/
+               /*
+               $tabela = 'setor' ;
+               $valor ='teste';
+               $where = "nome ='{$valor}'";
+               $result = $crud->deletar($tabela, $where);
+                if($result > 0){
+                    echo 'deletado  com sucesso';
+                }
+                else {
+                    echo 'falha ao tentar deletar';
+                }*/
+               /*FIM DELETAR */
+               
+               /*INSERIR */
+               /* $nome = 'test' ;
+               $dadosAlt = array( 'nome' =>$nome );
+               
+               $result = $crud->inserir($dadosAlt, 'setor');
+                if($result > 0){
+                    echo 'insercao realizada com sucesso';
+                }
+                else {
+                    echo 'falha na insercao';
+                }*/
+               /*FIM INSERIR */
+               
+               /*ATUALIZAR */
+               /* 
+               $nome = 'usuario' ;
+               $senha = '123';
+               $dadosAlt = array( 'nome' =>$nome,
+                                  'senha'=>$senha  
+                   );
+               $where = 'idusuario = 3';
+               $result = $crud->atualizar('usuario', $dadosAlt, $where);
+                if($result > 0){
+                    echo 'atualizacao realizada com sucesso';
+                }
+                else {
+                    echo 'falha na atualizacao';
+                }*/
+               /*FIM ATUALIZAR */
+               }
+              else {
+                 echo 'falha ao carregar arquivo crud';
+               }
+        }
+   else{
+        echo 'falha ao carregar arquivo configBD';
+   }
+    
+    
+
+
+/*
+ * FIM UTILIZANDO CRUD GENERICO
+ */
+
 
 /*
  * LISTAGEM DE MENUS DE ACORDO COM AS PERMISSÕES

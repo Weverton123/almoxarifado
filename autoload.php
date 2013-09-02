@@ -29,15 +29,15 @@ class autoload{
                
          $_REQUEST['control'] = isset($_REQUEST['control']) ?
                   ($_REQUEST['control']==null ? 'menu':$_REQUEST['control']): 'menu';
-            
-          return $this->control = $_REQUEST['control'];
+           
+            $this->control = $_REQUEST['control'];
         }
         else  {
-
+            
             $vals = $_SESSION['session'];
             $this->control = $vals['control'];
             $this->action  = $vals['action'];
-         
+        
            
         }
         
@@ -51,6 +51,9 @@ class autoload{
         if(file_exists(BASESYSTEM.'controller.php')){
             try{require_once (BASESYSTEM.'controller.php');}
             catch (Exception $ex){echo 'Falha no carregamento da página '.'controller.php';}
+        }
+        else{
+            echo 'Arquivo controller não foi encontrado!';
         }
     }
     private function load($classe,$action = NULL){//passo 4

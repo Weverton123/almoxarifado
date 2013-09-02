@@ -1,15 +1,15 @@
 <?php if(!defined('BASEPATH')) exit('Falha no carregamento do script!');
 
-require_once (BASESYSTEM.'configDB.php');
+//require_once (BASESYSTEM.'configDB.php');
 /*
 * Classe conexão DAO
 * -------------------------------------
 */
 class conexaoBanco extends controller{
 
-	public $pdo = NULL;
-
-	public function conectar(){
+    public $pdo;
+    
+    public function conectar(){
             
 		// Conexao com MySQL via PDO
                 $dsn = "{$this->db_driver}:host={$this->db_host};port={$this->db_port};dbname={$this->db_name}";
@@ -21,7 +21,8 @@ class conexaoBanco extends controller{
 		);
 
 		try {
-			$this->pdo = new PDO($dsn, $usuario, $senha, $opcoes);
+                     $this->pdo = new PDO($dsn, $usuario, $senha);
+                     return $this->pdo;
 		} catch (PDOException $e) {
 			echo utf8_decode('Falha na conexão do banco <br/> contate o administrador <br/> Erro: '.$e->getMessage());
 		}

@@ -19,7 +19,7 @@
     //a seguinte estrutur $_SESSION['session']['nome_da_sessao_criada']
     $_array_geral = array();
     
-    
+ 
    // echo isset($_GET['control']) ? $_GET['control']:'nao existe ou vazio';
         
     if(file_exists(BASEPATH.'autoload.php')){
