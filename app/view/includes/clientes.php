@@ -88,15 +88,15 @@
               
        $_SESSION['session']['acoes'] = $_vals;
                     
-       header("Location: ?action={$action}");
+       redirecionar("?action={$action}");
    }
    if(isset($_REQUEST['deletarUsu'])){
        $id = $_REQUEST['deletarUsu'];
-       $control = 'login';
-       $action  = 'deletar';
+       $action  = 'deletarusu';
               
        $_vals = array( 'idusuario' => $id );
        
+       $_SESSION['session']['acoes'] = $_vals;
        
        redirecionar("?action={$action}");
    }  

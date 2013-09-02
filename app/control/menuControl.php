@@ -94,6 +94,9 @@ class menu extends controller {
     public function editarusu(){
         $this->view('alterarusu', $this->res);
     }
+    public function deletarusu(){
+        $this->view('deletarusu',  $this->res);
+    }
 
     public function logoff(){
         session_start();

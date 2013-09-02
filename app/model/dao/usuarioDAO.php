@@ -274,9 +274,9 @@ class usuarioDAO{
     * Recebe PK como parametro
 	*/
     public function Deletar($pk){
-
-		$retorno = 0;
-
+                    
+                $retorno = 0;
+        
 		# Faz conex�o
 		$conexao = new conexaoBanco();
 		$conexao->conectar();
@@ -296,6 +296,7 @@ class usuarioDAO{
 
 		return $retorno;
 	}
+	
 
 }
 ?>
