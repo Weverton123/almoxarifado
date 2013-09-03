@@ -24,9 +24,9 @@ class setorDAO{
 
 
         # Parametros
-        $stmt->bindValue(2,$dados->getIdsetor());
+        $stmt->bindValue(3,$dados->getIdsetor());
         $stmt->bindValue(1,$dados->getNome());
-
+        $stmt->bindValue(2,$dados->getCodigo());
 
         try{
             $retorno = $stmt->execute();
@@ -49,11 +49,12 @@ class setorDAO{
         $conexao->conectar();
 
         try{
-            $stmt = $conexao->pdo->prepare('INSERT INTO setor (nome) VALUES (?)');
+            $stmt = $conexao->pdo->prepare('INSERT INTO setor (nome,codigo) VALUES (?,?)');
 
 
 
 			$stmt->bindValue(1,$dados->getNome());
+                        $stmt->bindValue(2,$dados->getCodigo());
 
             $retorno = $stmt->execute();
         }
@@ -73,10 +74,10 @@ class setorDAO{
 	    $conexao->conectar();
 
 	    # Executa comando SQL
-	    $stmt = $conexao->pdo->prepare('SELECT idsetor, nome FROM setor WHERE idsetor = ? OR nome = ? ');
+	    $stmt = $conexao->pdo->prepare('SELECT idsetor, nome, codigo FROM setor WHERE idsetor = ? OR nome = ? OR codigo = ?');
 
 	    # Passando os valores a serem usados
-    	$dados = array($pk,$pk);
+    	$dados = array($pk,$pk,$pk);
     	$stmt->execute($dados);
     	$retorno = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if($retorno !=NULL){
@@ -107,7 +108,7 @@ class setorDAO{
     	$conexao->conectar();
 
     	# Executa comando SQL
-    	$stmt = $conexao->pdo->prepare('SELECT idsetor, nome FROM setor ORDER BY idsetor DESC');
+    	$stmt = $conexao->pdo->prepare('SELECT idsetor, nome, codigo FROM setor ORDER BY idsetor DESC');
 
     	// Executa Query
     	$stmt->execute();
@@ -123,7 +124,7 @@ class setorDAO{
     		#Atribui valores
 		    $setorClass->setIdsetor($row['idsetor']);
 		    $setorClass->setNome($row['nome']);
-
+                    $setorClass->setCodigo($row['codigo']);
     		$lista[$i] = $setorClass;
     		$i++;
     	}

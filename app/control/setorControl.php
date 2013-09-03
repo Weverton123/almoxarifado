@@ -49,12 +49,6 @@ class setor {
        header('Location: ?action=cliente');  
     }
     
-    public function buscar(){
-        
-    }
-    public function listar(){
-        
-    }
     public function alterar(){
         
     }

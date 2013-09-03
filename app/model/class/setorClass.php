@@ -6,7 +6,7 @@ class setorClass{
     */
     private $idsetor;
     private $nome;
-
+    private $codigo;
     /*
     * Propriedades dos atributos
     */
@@ -25,6 +25,14 @@ class setorClass{
 
     public function getNome(){
         return $this->nome;
+    }
+    
+    public function setCodigo($codigo){
+        $this->codigo = $codigo;
+    }
+
+    public function getCodigo(){
+        return $this->codigo;
     }
 }
 
