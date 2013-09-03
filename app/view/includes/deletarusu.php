@@ -6,7 +6,7 @@ ob_start();
 session_start();
 
   if(!isset($_SESSION['session']['acoes']['idusuario'])){
-      redirecionar('?action=cliente');
+      redirecionar('?action=usuario');
   }
   
    $usu = $_SESSION['session']['acoes']['idusuario'];
@@ -25,4 +25,4 @@ session_start();
       $_SESSION['session']['acoes']['msg']='Falha ao tentar excluir usuário!';  
    }
     
-  redirecionar('?action=cliente');
+  redirecionar('?action=usuario');

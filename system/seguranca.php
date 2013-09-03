@@ -14,7 +14,7 @@ session_start();
           $menuDisp = unserialize($_SESSION['session']['logado']);
           $menu = new menuClass();
           $menu = $menuDisp;
-          $acesso = FALSE;
+          /*$acesso = FALSE;
           foreach ($menu as $ls){
               if($ls->getLink()==$_REQUEST['action']){//verifica se o usuario logado tem acesso a pagina requisitada
                   $acesso=TRUE;
@@ -27,7 +27,7 @@ session_start();
           }
           else if(!$acesso) {
               redirecionar('?action=minhaarea');
-          }
+          }*/
               
         }
         else{

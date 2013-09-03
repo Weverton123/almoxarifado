@@ -1,9 +1,11 @@
 <?php if(!defined('BASEPATH')) exit('Falha no carregamento do BASEPATH!');
   //Ativa o Buffer que armazena o conteúdo principal da página
-seguranca_arq();  
+//seguranca_arq();  
 ob_start();
 
 session_start();
+//require_once (BASEMODEL.'conexaoBD.php');
+//require_once (BASEMODELDAO.'menuDAO.php');
 
   if(!isset($_SESSION['session']['acoes']['idusuario'])){
       redirecionar('?action=cliente');
@@ -137,28 +139,37 @@ session_start();
                     <?php
                    $vars = $_SESSION['session']['logado'];
                     //print_r($vars);
-                    $vars = unserialize($vars);//disserializo o objeto armazenado na sessão
-                    $menu = new menuClass();//crio um objeto para armazenar o objeto trazido pela sessão
-                    $menu = $vars;//armazeno na variavel $menu o objeto trazido pela sessão
+                    $vars = unserialize($vars);//disserializa o objeto armazenado na sessão
+                    $menu = new menuClass();//cria um objeto para armazenar, o objeto trazido pela sessão
+                    $menu = $vars;//armazena na variavel $menu o objeto trazido pela sessão
                     $permAtv = new permissaoDAO();
                     $retorn = $permAtv->ObterPorPK($ret->getIdusuario());
                     
-                 
+                    $menuDisab = new menuDAO();
                     foreach ($menu as $ls){
                         $check ='';
+                        $disabled = '';
                         foreach ($retorn as $lsp){
                            
-                            if($lsp->getMenu_idmenu() == $ls->getIdmenu()){
+                            if($lsp->getMenu_idmenu() == $ls->getIdmenu()){//verifica as permissões que estão checadas
                                 $check = 'checked';
+                                if($menuDisab->ObterPorPK($lsp->getMenu_idmenu())->getLink()=='logoff'||
+                                    $menuDisab->ObterPorPK($lsp->getMenu_idmenu())->getLink()=='minhaarea'){
+                                    $disabled = 'disabled';
+                                    }
+                                else{
+                                     $disabled ='';
+                                    }
                                 break;
                             }
                             else {
                                 $check = '';
                             }
+                            
                           }
                             
                         echo "<p>
-                              <input type='checkbox' name='menu[]' {$check} value='{$ls->getIdmenu()}'>{$ls->getNome()}<br>
+                              <input type='checkbox' name='menu[]' {$check} {$disabled} value='{$ls->getIdmenu()}'>{$ls->getNome()}<br>
                               </p>";
                                   
                                
@@ -180,13 +191,10 @@ session_start();
 <?php
    // titulo pagina
    $titulo_page = 'AlmoXerife: Editar usuario';
-  // page recebe o conteudo do buffer
-  $page = ob_get_contents(); 
-
-  //classe do controle 
-  $class = 'index.php?action=';
+   // page recebe o conteudo do buffer
+   $conteudo = ob_get_contents(); 
   
   // Descarta o conteudo do Buffer
   ob_end_clean(); 
   //Include com o Template
-  include_once(BASEVIEW."base.php");
+  include_once(BASEVIEWINC."clientes.php");

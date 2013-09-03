@@ -91,11 +91,21 @@ class menu extends controller {
     public function requisicoes(){
         echo 'FALTA CRIAR';
     }
+    
+    public function cadastrarusu(){
+        $this->view('cadastrarusu', $this->res);
+    }
     public function editarusu(){
         $this->view('alterarusu', $this->res);
     }
     public function deletarusu(){
         $this->view('deletarusu',  $this->res);
+    }
+    public function usuario(){
+        $this->view('usuarios', $this->res);
+    }
+    public function setor(){
+        $this->view('setores', $this->res);
     }
 
     public function logoff(){

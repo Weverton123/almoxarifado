@@ -66,7 +66,6 @@ class login {
     }
   
     public function cadastrar(){
-        print_r($_SESSION['session']['acoes']);
         $usu = new usuarioClass();
         $usu->setNome($_SESSION['session']['acoes']['nome']);
         $usu->setLogin($_SESSION['session']['acoes']['login']);
@@ -76,20 +75,26 @@ class login {
         
         $usuario = new usuarioDAO();
         $ret = $usuario->ObterPorPK($usu->getLogin());
-        
-        if(!$ret){
+        if($ret){
             $_SESSION['session']['acoes']['msg'] = 'Login já cadastrado!';
         }
         else {
             //$usuario->incluir($login, $nome, $senha, $idsetor, $idtipousuario);
             $ret = $usuario->incluir($usu->getLogin(), $usu->getNome(), $usu->getSenha(), $usu->getSetor_idsetor(), $usu->getTipousuario_idtipousuario());
             if($ret){//se o usuario for cadastrador com sucesso insiro as permissões de acesso
+               $ret = $usuario->ObterPorPK($usu->getLogin());//verifica e carrega o usuario cadastrado para identificar o id
+                try{
                 $perm = new permissaoDAO();
                 $listPerm = $_SESSION['session']['acoes']['permissao'];
+                 
                     foreach ($listPerm as $ls){
-                        $perm->incluir($ls,$usu->getIdusuario());
+                        $perm->incluir($ls,$ret->getIdusuario());
                     }
                   $_SESSION['session']['acoes']['msg'] = 'Cadastro realizado com sucesso!';
+                }
+               catch (Exception $ex){
+                 $_SESSION['session']['acoes']['msg'] = 'Falha no cadastro das permissões!';
+               }
             }
             else {
                $_SESSION['session']['acoes']['msg'] = 'Falha ao cadastrar usuário!';
@@ -97,7 +102,7 @@ class login {
             
         }
         
-        header('Location: ?action=cliente');
+        redirecionar('?action=usuario');
         
      }
    
@@ -182,7 +187,7 @@ class login {
         else{
             
             //echo  $alterar['idusu'].$alterar['newlogin'];
-            redirecionar('?action=cliente');
+            redirecionar('?action=usuario');
         }
     }
     
@@ -236,7 +241,7 @@ class login {
         else{
             
             //echo  $alterar['idusu'].$alterar['newlogin'];
-            redirecionar('?action=cliente');
+            redirecionar('?action=usuario');
         }
     }
 
@@ -250,7 +255,7 @@ class login {
                         $perm->incluir($ls,$iduser);
                     }
                   $_SESSION['session']['acoes']['msg'] = 'Alterações realizada com sucesso!';
-                  redirecionar('?action=cliente');
+                  redirecionar('?action=usuario');
     }
     
     public function alteraradmin(){
@@ -260,7 +265,7 @@ class login {
                
      $tipo->alterarAdm($adm, $iduser);
      $_SESSION['session']['acoes']['msg'] = 'Alterações realizada com sucesso!';
-     redirecionar('?action=cliente');
+     redirecionar('?action=usuario');
      
     }
 }
