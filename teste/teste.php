@@ -1,9 +1,33 @@
 <?php
+$msg = '';
+echo $msg;
+if(isset($_REQUEST['cad'])){
+        
+        // Abre ou cria o arquivo exemplo1.txt
+        // "a" representa que o arquivo é aberto para ser escrito
+        $fp = fopen("test.php", "a");
+
+        // Escreve "primeiro exemplo" no exemplo1.txt
+        $escreve = fwrite($fp, "primeiro exemplo");
+
+        // Fecha o arquivo
+        $msg = 'SUCESSO!'.$fp; 
+        fclose($fp);
+        echo $msg ;
+    }
+?>
+
+    <form method="POST" action="">
+        <input type="submit" name="cad" value="cadastrar">
+    </form>
+	
+<?php
 /*
  * UTILIZANDO CRUD GENERICO
- */
-echo 'teste';
+ *
 
+
+/*
 if(file_exists('../system/configDB.php')){
   require_once('../system/configDB.php');
              if(file_exists('../app/model/crud.php')){
@@ -62,7 +86,7 @@ if(file_exists('../system/configDB.php')){
                 else {
                     echo 'falha na atualizacao';
                 }*/
-               /*FIM ATUALIZAR */
+               /*FIM ATUALIZAR 
                }
               else {
                  echo 'falha ao carregar arquivo crud';
@@ -71,6 +95,7 @@ if(file_exists('../system/configDB.php')){
    else{
         echo 'falha ao carregar arquivo configBD';
    }
+   */
     
     
 

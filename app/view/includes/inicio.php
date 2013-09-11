@@ -4,7 +4,7 @@
   ob_start();
   
   verifica(); 
-    session_start();
+    //session_start();
 function verifica(){
    
     if(isset($_REQUEST['validar'])){ 

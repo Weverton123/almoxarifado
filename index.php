@@ -21,7 +21,9 @@
     
  
    // echo isset($_GET['control']) ? $_GET['control']:'nao existe ou vazio';
-        
+    
+    if(file_exists(BASESYSTEM.'configDB.php')){//se a configuração do banco não existir é iniciado o passo de instalação
+    
     if(file_exists(BASEPATH.'autoload.php')){
         try {
         
@@ -35,5 +37,8 @@
     }     
     else  
         echo 'houve falha';
-     
+    }
+    else {
+        require_once ('install/instaler.php');
+    }
     
