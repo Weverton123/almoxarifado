@@ -1,4 +1,4 @@
-<?php
+<?php if(!defined('BASEPATH')) exit(header('Location: ./../../../index.php'));
 
 class permissaoClass{
     /*

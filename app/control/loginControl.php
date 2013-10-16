@@ -1,5 +1,5 @@
-<?php if(!defined('BASEPATH')) exit('Falha no carregamento do script!');
-
+<?php if(!defined('BASEPATH')) exit(header('Location: ./../../index.php'));
+//seguranca_arq();
 //Carrego as classes  DAO's para realizar as comunicações com o banco de dados 
 //e buscar os menus de acordo com as permissoes
 //require_once (BASEMODEL.'conexaoBD.php');//realiza a conexao com o banco
@@ -36,16 +36,16 @@ class login {
         $perm = new permissaoDAO();
         $menu = new menuDAO();
         //$ret2 = $menu->ObterPorTodos();
-        $ret2 = $perm->ObterPorPK($ret->getIdusuario());
+        $ret2 = $perm->ObterPorPK($ret->getIdusuario());//obtem os id's das permissões para o usuario informado
         $lista_menu = array();
         $i=0;
        foreach ($ret2 as $ln){
-           $lista_menu[$i] = $menu->ObterPorPK($ln->getMenu_idmenu());
+           $lista_menu[$i] = $menu->ObterPorPK($ln->getMenu_idmenu());//obtem o nome de cada menu disponivel para o usuario
            $i++;
        }
         
             //$_SESSION['erro'] = 'Usuario logado com sucesso!';
-           /*foreach ($lista_menu as $ms){
+          /* foreach ($lista_menu as $ms){
             echo $ms->getNome().' ';
             }*/
           
@@ -267,6 +267,32 @@ class login {
      $_SESSION['session']['acoes']['msg'] = 'Alterações realizada com sucesso!';
      redirecionar('?action=usuario');
      
+    }
+    public function deletarusu(){
+       // session_start();
+
+        if(!isset($_SESSION['session']['acoes']['idusuario'])){
+            redirecionar('?action=usuario');
+        }
+         if(verifica_acesso()){
+         $usu = $_SESSION['session']['acoes']['idusuario'];
+
+         $usuperm = new permissaoDAO();
+         $usuario = new usuarioDAO();
+         $usuperm->Deletar($usu);//primeiro é preciso excluir as permissões
+         $ret =  $usuario->Deletar($usu);//segundo exclui o usuario
+
+            if($ret > 0){
+                $_SESSION['session']['acoes']['msg']='Usuário excluído com sucesso!';
+               }
+             else{
+              $_SESSION['session']['acoes']['msg']='Falha ao tentar excluir usuário!';  
+             }
+         }
+         else{
+           $_SESSION['session']['acoes']['msg']='Usuário sem permissão para realizar exclusão!';
+        }
+        redirecionar('?action=usuario');
     }
 }
 

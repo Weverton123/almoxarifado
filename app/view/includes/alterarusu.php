@@ -1,11 +1,11 @@
 <?php if(!defined('BASEPATH')) exit('Falha no carregamento do BASEPATH!');
   //Ativa o Buffer que armazena o conteúdo principal da página
-//seguranca_arq();  
+seguranca_arq();  
 ob_start();
 
 session_start();
-//require_once (BASEMODEL.'conexaoBD.php');
-//require_once (BASEMODELDAO.'menuDAO.php');
+require_once (BASEMODEL.'conexaoBD.php');
+require_once (BASEMODELDAO.'menuDAO.php');
 
   if(!isset($_SESSION['session']['acoes']['idusuario'])){
       redirecionar('?action=cliente');
@@ -40,11 +40,13 @@ session_start();
                 $i=0;
         foreach ($_REQUEST['menu'] as $ls){
                        $perm[$i]=$ls;
+                       //echo $perm[$i];
                        $i++;
+
            }
         $_vals = array( 'permissao'=> $perm,
                         'idusuario'=> $_SESSION['session']['acoes']['idusuario']);
-         $_SESSION['session']['acoes'] = $_vals;
+        $_SESSION['session']['acoes'] = $_vals;
         redirecionar("?control={$control}&action={$action}");
                 
     }
@@ -133,6 +135,12 @@ session_start();
                     <input type="submit" name="alterarA" value="Alterar administração" />
 		</p>
                 </form>
+                <style type="text/css">
+                    .invisible{
+                        visibility:hidden;
+                        display: none;
+                    }
+                </style>
                 <form method="post">
                 <p>
                     <strong>Permissões:</strong><br />
@@ -140,26 +148,49 @@ session_start();
                    $vars = $_SESSION['session']['logado'];
                     //print_r($vars);
                     $vars = unserialize($vars);//disserializa o objeto armazenado na sessão
-                    $menu = new menuClass();//cria um objeto para armazenar, o objeto trazido pela sessão
-                    $menu = $vars;//armazena na variavel $menu o objeto trazido pela sessão
+                    //$menu = new menuClass();//cria um objeto para armazenar, o objeto trazido pela sessão
+                    //$menu = $vars;//armazena na variavel $menu o objeto trazido pela sessão
+                    
+                    $menu = new menuDAO();//Cria objeto menuDAO para se comunicar com o BD
+                    $menus = $menu->ObterPorTodos();//obtem a lista de todos o menus existente no banco
                     $permAtv = new permissaoDAO();
                     $retorn = $permAtv->ObterPorPK($ret->getIdusuario());
+                    //$menus  = new menuDAO();
                     
-                    $menuDisab = new menuDAO();
-                    foreach ($menu as $ls){
+                    //$retorn = $menus->ObterPorTodos();
+                    //$menuDisab = new menuDAO();
+                    foreach ($menus as $ls){
                         $check ='';
                         $disabled = '';
                         foreach ($retorn as $lsp){
-                           
+                          if(   $ls->getLink()=='logoff'||
+                                  $ls->getLink()=='quemsomos'||
+                                    $ls->getLink()=='minhaarea' ||
+                                      $ls->getLink()=='faleconosco'||
+                                          $ls->getLink()=='index'
+
+                                        ){
+                                    $disabled = "class='invisible'";
+                                    } 
+                                    
+                           else{
+                                  $disabled ='';
+                                  }
                             if($lsp->getMenu_idmenu() == $ls->getIdmenu()){//verifica as permissões que estão checadas
                                 $check = 'checked';
-                                if($menuDisab->ObterPorPK($lsp->getMenu_idmenu())->getLink()=='logoff'||
-                                    $menuDisab->ObterPorPK($lsp->getMenu_idmenu())->getLink()=='minhaarea'){
-                                    $disabled = 'disabled';
+                               
+                                
+                                /*if($menu->ObterPorPK($lsp->getMenu_idmenu())->getLink()=='logoff'||
+                                    $menu->ObterPorPK($lsp->getMenu_idmenu())->getLink()=='minhaarea' ||
+                                      $menu->ObterPorPK($lsp->getMenu_idmenu())->getLink()=='faleconosco'||
+                                          $menu->ObterPorPK($lsp->getMenu_idmenu())->getLink()=='index'
+
+                                        ){
+                                    $disabled = "class='invisible'";
                                     }
                                 else{
                                      $disabled ='';
-                                    }
+                                    }*/
                                 break;
                             }
                             else {
@@ -168,7 +199,7 @@ session_start();
                             
                           }
                             
-                        echo "<p>
+                        echo "<p {$disabled}>
                               <input type='checkbox' name='menu[]' {$check} {$disabled} value='{$ls->getIdmenu()}'>{$ls->getNome()}<br>
                               </p>";
                                   

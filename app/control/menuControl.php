@@ -1,7 +1,8 @@
-<?php  if(!defined('BASEPATH')) exit('Falha no carregamento do script!');
+<?php  if(!defined('BASEPATH')) exit(header('Location: ./../../index.php'));
+//seguranca_arq();
 /**
  * Description of menuControl
- *
+ * Serve para carregar exibir as view's
  * @author italo
  */
 //require_once (BASEMODEL.'conexaoBD.php');//realiza a conexao com o banco
@@ -24,19 +25,53 @@ class menu extends controller {
     private function carregaMenu(){
         session_start();
         if(isset($_SESSION['session']['logado'])){ 
-          
+            
          //echo 'logado = true';
          $vars = $_SESSION['session']['logado'];
          //print_r($vars);
          $vars = unserialize($vars);//disserializo o objeto armazenado na sessão
+         //print_r($vars);
          $menu = new menuClass();//crio um objeto para armazenar o objeto trazido pela sessão
          $menu = $vars;//armazeno na variavel $menu o objeto trazido pela sessão
          $menulimitado = array();
-         $limit = count($menu)>= 3 ? 3 : count($menu);//limita a quantidade de abas e caso o limite seja menor 
-         //entao ele será o limit
-         for($i=0; $i < $limit ;$i++){
-             $menulimitado[$i] = $menu[$i];
+         //$limit = count($menu)>= 3 ? 3 : count($menu);//limita a quantidade de abas e caso o limite seja menor 
+         //$limit = $menu->getLink()=='faleconosco' ? 
+         
+         $j = 0;
+         
+         for($i=0; $i < count($menu) ;$i++){
+             //if para exibir apenas os menus que são aba
+             if($menu[$i]->getLink()=='faleconosco' || $menu[$i]->getLink()=='editarusu'||
+                $menu[$i]->getLink()=='deletarusu' || $menu[$i]->getLink()=='setor'||
+                $menu[$i]->getLink()=='index' || $menu[$i]->getLink()=='usuario'||
+                $menu[$i]->getLink()=='cadastrarusu'||$menu[$i]->getLink()=='editarsetor'||     
+                $menu[$i]->getLink()=='cadastrarsetor'||$menu[$i]->getLink()=='deletarsetor'||
+                $menu[$i]->getLink()=='material'||$menu[$i]->getLink()=='requisicao'||
+                $menu[$i]->getLink()=='cadastrarmaterial'||$menu[$i]->getLink()=='cadastrarrequisicao'||
+                $menu[$i]->getLink()=='deletarmaterial'||$menu[$i]->getLink()=='deletarrequisicao'||
+                $menu[$i]->getLink()=='editarmaterial'||$menu[$i]->getLink()=='editarrequisicao'
+
+                 ){
+             
+             }
+            else {
+             if($menu[$i]->getLink()=='minhaarea'){
+                 $minhaArea = $menu[$i];
+             } 
+             else if($menu[$i]->getLink()== 'logoff'){
+                 $sair = $menu[$i];
+             }
+             else{
+                 $menulimitado[$j] = $menu[$i];
+                 $j++;
+             }
+            
+            }           
          }
+         $menulimitado[$j] = $minhaArea;//define penultima posição do menu para o menu $minhaArea
+         $j++;
+         $menulimitado[$j] = $sair;//define ultima posição do menu para o menu $sair
+         //print_r($menulimitado);
          $this->res = $menulimitado;
            
           
@@ -63,10 +98,9 @@ class menu extends controller {
          
     }
 
-
+    //RELACIONADO AO MENU OFFLINE
     public function index(){
-        
-       //$this->carregaMenu(); 
+        //$this->carregaMenu(); 
        $this->view('inicio', $this->res);  
     }
     public function faleconosco(){
@@ -77,37 +111,68 @@ class menu extends controller {
         //$this->carregaMenu();
         $this->view('quem-somos',  $this->res);    
     }
+  
+   
+    
+    //RELACIONADO AO MATERIAL
+    public function material(){
+       $this->view('material',  $this->res);    
+    }
+    public function cadastrarmaterial(){
+       $this->view('cadastrarmaterial',  $this->res);    
+    }
+    public function editarmaterial(){
+       $this->view('alterarmaterial',  $this->res);    
+    }
+    
+    //RELACIONADO A REQUISIÇÃO
+    public function requisicao(){
+        $this->view('requisicao', $this->res);
+    }
+
+    //MENU PARA GERENCIAR MATERIAL E REQUISIÇÕES
+    public function requisicoes(){
+       $this->view('requisicoes',  $this->res);
+    }
+    
+    
+    //MENU PARA GERENCIAR SETOR E USUARIO
     public function cliente(){
         //$this->carregaMenu();
         $this->view('clientes',  $this->res);
     }
+    
+   
+    //RELACIONADO AO USUÁRIO
+    public function usuario(){//página de listagem de usuários
+        $this->view('usuarios', $this->res);
+    }
+    public function cadastrarusu(){//página para cadastro de usuário
+        $this->view('cadastrarusu', $this->res);
+    }
+    public function editarusu(){//página para edição de usuário 
+        $this->view('alterarusu', $this->res);
+    }
+    //USUÁRIO ATUAL
     public function minhaarea(){
         //$this->carregaMenu();
         $this->view('minha-area',  $this->res);
     }
-    public function materiais(){
-        echo 'FALTA CRIAR';
-    }
-    public function requisicoes(){
-        echo 'FALTA CRIAR';
-    }
     
-    public function cadastrarusu(){
-        $this->view('cadastrarusu', $this->res);
-    }
-    public function editarusu(){
-        $this->view('alterarusu', $this->res);
-    }
-    public function deletarusu(){
-        $this->view('deletarusu',  $this->res);
-    }
-    public function usuario(){
-        $this->view('usuarios', $this->res);
-    }
+    
+    //RELACIONADO AO SETOR
     public function setor(){
         $this->view('setores', $this->res);
     }
-
+    public function cadastrarsetor(){
+        $this->view('cadastrarsetor', $this->res);
+    }
+    public function editarsetor(){
+        $this->view('alterarsetor',  $this->res);
+    }
+    
+    
+    //ENCERRA CONEXÃO        
     public function logoff(){
         session_start();
         session_unset('session');

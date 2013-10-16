@@ -1,4 +1,4 @@
-<?php if(!defined('BASEPATH')) exit('Falha no carregamento do script!');
+<?php if(!defined('BASEPATH')) exit(header('Location: ./../../../index.php'));
 
 require_once (BASEMODEL.'conexaoBD.php');
 require_once (BASEMODELCLASS.'materialClass.php');
@@ -78,20 +78,20 @@ class materialDAO{
     /*
     * Obtem por Pk
     */
-    public function ObterPorPK($pk){
+    public function ObterPorNome($nome){
 
     	# Faz conex�o
 	    $conexao = new conexaoBanco();
 	    $conexao->conectar();
 
 	    # Executa comando SQL
-	    $stmt = $conexao->pdo->prepare('SELECT idmaterial, nome, detalhes, quantidadeatual, categoria_idcategoria FROM material WHERE idmaterial = ? ');
+	    $stmt = $conexao->pdo->prepare('SELECT idmaterial, nome, detalhes, quantidadeatual, categoria_idcategoria FROM material WHERE idmaterial = ?');
 
 	    # Passando os valores a serem usados
-    	$dados = array($pk);
+    	$dados = array($nome);
     	$stmt->execute($dados);
     	$retorno = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+        if($retorno != null){
     	#Inst�ncia da entidade
     	$materialClass = new materialClass();
 
@@ -106,6 +106,43 @@ class materialDAO{
     	}
 
     	return $materialClass;
+        }
+        else{
+            return FALSE;
+        }
+    }
+    public function ObterPorPK($nome,$grupoCat){
+
+    	# Faz conex�o
+	    $conexao = new conexaoBanco();
+	    $conexao->conectar();
+
+	    # Executa comando SQL
+	    $stmt = $conexao->pdo->prepare('SELECT idmaterial, nome, detalhes, quantidadeatual, categoria_idcategoria FROM material WHERE idmaterial = ?  AND categoria_idcategoria = ?');
+
+	    # Passando os valores a serem usados
+    	$dados = array($nome,$grupoCat);
+    	$stmt->execute($dados);
+    	$retorno = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if($retorno != null){
+    	#Inst�ncia da entidade
+    	$materialClass = new materialClass();
+
+    	foreach( $retorno as $row ){
+
+    		#Atribui valores
+		    $materialClass->setIdmaterial($row['idmaterial']);
+		    $materialClass->setNome($row['nome']);
+		    $materialClass->setDetalhes($row['detalhes']);
+		    $materialClass->setQuantidadeatual($row['quantidadeatual']);
+		    $materialClass->setCategoria_idcategoria($row['categoria_idcategoria']);
+    	}
+
+    	return $materialClass;
+        }
+        else{
+            return FALSE;
+        }
     }
     /*
     * Obtem todos
@@ -117,7 +154,7 @@ class materialDAO{
     	$conexao->conectar();
 
     	# Executa comando SQL
-    	$stmt = $conexao->pdo->prepare('SELECT idmaterial, nome, detalhes, quantidadeatual, categoria_idcategoria FROM material ORDER BY idmaterial DESC');
+    	$stmt = $conexao->pdo->prepare('SELECT idmaterial, nome, detalhes, quantidadeatual, (SELECT nome FROM categoria WHERE idcategoria = categoria_idcategoria) as grupo   FROM material ORDER BY idmaterial DESC');
 
     	// Executa Query
     	$stmt->execute();
@@ -135,7 +172,7 @@ class materialDAO{
 		    $materialClass->setNome($row['nome']);
 		    $materialClass->setDetalhes($row['detalhes']);
 		    $materialClass->setQuantidadeatual($row['quantidadeatual']);
-		    $materialClass->setCategoria_idcategoria($row['categoria_idcategoria']);
+		    $materialClass->setCategoria_idcategoria($row['grupo']);
 
     		$lista[$i] = $materialClass;
     		$i++;

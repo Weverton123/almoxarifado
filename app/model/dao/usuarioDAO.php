@@ -1,4 +1,4 @@
-<?php if(!defined('BASEPATH')) exit('Falha no carregamento do script!');
+<?php if(!defined('BASEPATH')) exit(header('Location: ./../../../index.php'));
 
 
 require_once (BASEMODEL.'conexaoBD.php');//realiza a conexao com o banco

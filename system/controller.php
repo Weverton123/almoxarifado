@@ -1,4 +1,4 @@
-<?php if(!defined('BASEPATH')) exit('Falha no carregamento do script!');
+<?php if(!defined('BASEPATH')) exit(header('Location: ./../index.php'));
     
 /**
  * Description of controller
@@ -11,7 +11,8 @@ require_once (BASESYSTEM.'seguranca.php');
 class controller extends configDB{
 //variável $val é utilizada para passar parâmetros para a view requisitada
     protected function view( $nameView, array $val = array() ){
-         require_once (BASEVIEWINC.$nameView.'.php');        
+        //redirecionar(BASEVIEWINC.$nameView);
+        require_once (BASEVIEWINC.$nameView.'.php');        
         exit();
     }
   	

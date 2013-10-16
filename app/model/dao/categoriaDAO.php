@@ -1,4 +1,4 @@
-<?php if(!defined('BASEPATH')) exit('Falha no carregamento do script!');
+<?php if(!defined('BASEPATH')) exit(header('Location: ./../../../index.php'));
 
 require_once (BASEMODEL.'conexaoBD.php');
 require_once (BASEMODELCLASS.'categoriaClass.php');
@@ -102,7 +102,7 @@ class categoriaDAO{
     	$conexao->conectar();
 
     	# Executa comando SQL
-    	$stmt = $conexao->pdo->prepare('SELECT idcategoria, nome FROM categoria ORDER BY idcategoria DESC');
+    	$stmt = $conexao->pdo->prepare('SELECT idcategoria, nome FROM categoria ORDER BY idcategoria ASC');
 
     	// Executa Query
     	$stmt->execute();

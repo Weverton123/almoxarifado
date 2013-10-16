@@ -1,4 +1,4 @@
-<?php
+<?php if(!defined('BASEPATH')) exit(header('Location: ./../../../index.php'));
 
 class requisicao_has_materialClass{
     /*

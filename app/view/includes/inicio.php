@@ -1,12 +1,8 @@
-<?php
-   if(!defined('BASEPATH')) exit('Falha no carregamento do script!');
+<?php if(!defined('BASEPATH')) exit('Falha no carregamento do script!');
   //Ativa o Buffer que armazena o conteúdo principal da página
   ob_start();
   
-  verifica(); 
-    //session_start();
-function verifica(){
-   
+    
     if(isset($_REQUEST['validar'])){ 
          if(isset($_REQUEST['username']) && isset($_REQUEST['password']) ? ($_REQUEST['username']== NULL ||$_REQUEST['password']==NULL
              ? FALSE :TRUE):FALSE){ 
@@ -20,11 +16,12 @@ function verifica(){
                                             'action'=>$action,
                                             'user'=>$user,
                                             'senha'=>$senha
-                                 );      
+                                 );
+               session_start();   
                $_SESSION['session'] = $_vals;
                 
                     
-               header("Location: ?control={$control}&action={$action}");
+               redirecionar("?control={$control}&action={$action}");
           }
            else{
            echo 'Todos os campos devem ser preenchidos!'; 
@@ -35,7 +32,7 @@ function verifica(){
   
   
   
-}      
+      
   
  
   ?>
@@ -51,9 +48,9 @@ function verifica(){
 	<br>
 	<input type="submit" name="validar" value="Entrar" />
 	<br>
-	<p><a href="<?=$class ?>faleconosco">Esqueci minha senha</a>
+	<p><a href="?action=<?=$class ?>faleconosco">Esqueci minha senha</a>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="<?=$class ?>faleconosco">Cadastrar um novo usuário</a></p>
+        <a href="?action=<?=$class ?>faleconosco">Cadastrar um novo usuário</a></p>
 </form>
 <!--
 	Fim de conteúdo
@@ -66,7 +63,7 @@ function verifica(){
   $page = ob_get_contents(); 
   
   //classe do controle 
-  $class = 'index.php?action=';
+  $class = '?action=';
   
   // Descarta o conteudo do Buffer
   ob_end_clean(); 

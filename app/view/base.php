@@ -1,4 +1,6 @@
-﻿<?php if(!defined('BASEPATH')) exit('Falha no carregamento do script!'); ?>
+﻿<?php if(!defined('BASEPATH')) exit('Falha no carregamento do script!'); 
+//seguranca_arq();
+?>
 <!--
 To change this template, choose Tools | Templates
 and open the template in the editor.

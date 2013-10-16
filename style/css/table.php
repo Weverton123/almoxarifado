@@ -219,7 +219,7 @@ table.display thead td:active {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * DataTables row classes
  */
-table.display tr.odd.gradeA {
+table.display tr.odd.gradeA {/*Azul*/
 	background-color: #ddffdd;
 }
 

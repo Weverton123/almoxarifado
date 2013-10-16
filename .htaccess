@@ -7,7 +7,8 @@ RewriteEngine on
 RewriteCond %{SCRIPT_FILENAME} !-f
 RewriteCond %{SCRIPT_FILENAME} !-d
 
-RewriteRule ^(.*)$ index.php [L,QSA]  
+RewriteRule ^(.*)$ index.php [L,QSA] 
+ 
 #DirectoryIndex index.php
 
 

@@ -19,7 +19,8 @@ class autoload{
               $this->getController();//passo 3
               
              
-              //echo $this->control.'..'.$this->action;
+             //echo $this->control.'..'.$this->action;
+            
              $this->load($this->control, $this->action);//passo 4
               
     }
@@ -27,8 +28,8 @@ class autoload{
     private function getControl(){//passo 1
         if($_REQUEST['action']!='validar'){
                
-         $_REQUEST['control'] = isset($_REQUEST['control']) ?
-                  ($_REQUEST['control']==null ? 'menu':$_REQUEST['control']): 'menu';
+         $_REQUEST['control'] = isset($_REQUEST['control']) && $_REQUEST['control'] != null ?
+                  $_REQUEST['control'] : 'menu';
            
             $this->control = $_REQUEST['control'];
         }
@@ -43,8 +44,9 @@ class autoload{
         
     }
     private function getAction(){//passo 2
-        $_REQUEST['action'] = isset($_REQUEST['action']) ?
-                 ($_REQUEST['action']==null ? 'index': $_REQUEST['action'] ):'index';
+        $_REQUEST['action'] = isset($_REQUEST['action']) && $_REQUEST['action']!=null ?
+                  $_REQUEST['action'] : 'index';
+        
         return $this->action = $_REQUEST['action'];
     }
     private function getController(){//passo 3 
@@ -57,20 +59,22 @@ class autoload{
         }
     }
     private function load($classe,$action = NULL){//passo 4
+      // echo 'chegou  '.$classe.' '.$action;
       $action = ($action==null ? 'index': $action);
         if(file_exists(BASECONTROL.$classe."Control.php")){
              require_once (BASECONTROL.$classe."Control.php");
 
-            try{
                  $app = new $classe();
-                 $app->$action();
-             } 
-             catch (Exception $ex){echo 'Falha no carregamento ou algum processo da página '.$classe."Control.php";}
-        } 
-      
+                 
+                 if(method_exists($classe,$action)){
+                     $app->$action();
+                 }
+                else echo utf8_decode("A ação especificada {$action} não existe na classe {$classe}!
+                    <br> Retornar a página inicial <a href='?action=index'>clique aqui</a>");  
+        }
         else {
-            echo utf8_decode("A classe {$classe} não existe! <br> Retornar a página inicial <a href='index.php?action=index'>clique aqui</a>")
-                ;  
+            echo utf8_decode("A classe {$classe} não existe! <br> Retornar a página inicial
+                <a href='?action=index'>clique aqui</a>");  
         }
     }
  

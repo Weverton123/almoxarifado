@@ -1,6 +1,6 @@
-<?php if(!defined('BASEPATH')) exit('Falha no carregamento do BASEPATH!');
+<?php if(!defined('BASEPATH')) exit(header('Location: ./../../index.php'));
   //Ativa o Buffer que armazena o conteúdo principal da página
-//seguranca_arq();  
+seguranca_arq();  
 ob_start();
 
   require_once (BASEMODEL.'conexaoBD.php');
@@ -8,11 +8,11 @@ ob_start();
 session_start();
 
   if(isset($_REQUEST['criarUsu'])){
-      if(isset($_REQUEST['nome'])?($_REQUEST['nome']== NULL ? FALSE :TRUE):FALSE){
-        if(isset($_REQUEST['login'])?($_REQUEST['login']== NULL ? FALSE :TRUE):FALSE){
-           if(isset($_REQUEST['senha'])?($_REQUEST['senha']== NULL ? FALSE :TRUE):FALSE){
-               if(isset($_REQUEST['setorCadas'])?($_REQUEST['setorCadas']== '-1' ? FALSE :TRUE):FALSE){
-                $adm =  isset($_REQUEST['adm'])?($_REQUEST['adm']== '1' ? 1 : 2): 2;
+      if(isset($_REQUEST['nome']) && $_REQUEST['nome']!= NULL ? TRUE : FALSE){
+        if(isset($_REQUEST['login'])&& $_REQUEST['login']!= NULL ? TRUE :FALSE){
+           if(isset($_REQUEST['senha'])&& $_REQUEST['senha']!= NULL ? TRUE :FALSE){
+               if(isset($_REQUEST['setorCadas'])&& $_REQUEST['setorCadas']!= '-1' ? TRUE : FALSE){
+                $adm =  isset($_REQUEST['adm'])&& $_REQUEST['adm']== '1' ? 1 : 2;
                 $perm = array();
                 $i=0;
                 if(isset($_REQUEST['menu'])){
@@ -108,7 +108,7 @@ session_start();
                     foreach ($menu as $ls){
                       if($ls->getLink() == 'logoff' || $ls->getLink() == 'minhaarea'){  
                        echo "<p>
-                              <input type='checkbox' name='menu[]' checked disabled value='{$ls->getIdmenu()}'>{$ls->getNome()}<br>
+                              <input type='checkbox' name='menu[]' checked  value='{$ls->getIdmenu()}'>{$ls->getNome()}<br>
                             </p>";
                           }
                      else{

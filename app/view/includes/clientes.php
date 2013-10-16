@@ -1,7 +1,8 @@
 ﻿<?php if(!defined('BASEPATH')) exit('Falha no carregamento do BASEPATH!');
   //Ativa o Buffer que armazena o conteúdo principal da página
-  ob_start();
-  seguranca_arq();
+   seguranca_arq();
+ob_start();
+
   
    session_start();
    
@@ -31,9 +32,9 @@
   $page = ob_get_contents(); 
 
   //classe do controle 
-  $class = 'index.php?action=';
+  $class = '?action=';
   
   // Descarta o conteudo do Buffer
   ob_end_clean(); 
   //Include com o Template
-  include(BASEVIEW."base.php");
+  include_once(BASEVIEW."base.php");

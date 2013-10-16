@@ -19,6 +19,13 @@
     //a seguinte estrutur $_SESSION['session']['nome_da_sessao_criada']
     $_array_geral = array();
     
+    //A cada exception ou erro na utilização do sistema será informado um
+    //código de erro segue os códigos e seus erros:
+   /*  CÓDIGO  | ERRO
+    *  0001    | Falha no carregamento do script ou usuário está tentando acessar a pagina pela URL diretamente sem ter passado pela index. 
+    *  
+    * 
+    */
  
    // echo isset($_GET['control']) ? $_GET['control']:'nao existe ou vazio';
     

@@ -1,5 +1,10 @@
 <?php if(!defined('BASEPATH')) exit('Falha no carregamento do script!');
 
+$host = NULL;
+$port = NULL;
+$user = NULL;
+$senha = NULL; 
+$dbname = NULL;
 if(isset($_REQUEST['install'])){
 if(ini_get('allow_url_fopen') == 1){
 // Abre ou cria o arquivo exemplo1.txt
@@ -109,62 +114,6 @@ a { color:#3366FF}
             </form>
         </div>
         
-	<form id="custom">
-				<fieldset title="Thread 1">
-					<legend>description one</legend>
-
-					<label>User:</label>
-					<!-- Hidden fields are not focused.  -->
-					<input type="hidden" name="hidden" />
-
-					<!-- Disabled fields are not validated.  -->
-					<input type="text" value="wbotelhos" size="40" name="user" disabled="disabled" />
-
-					<label>E-mail:</label>
-					<input type="text" size="40" name="email" />
-					<input type="checkbox" name="checked" /> Checked?
-
-					<label>Newsletter?</label>
-					<input type="radio" name="newsletter" /> Yep
-					<input type="radio" name="newsletter" /> Nop
-
-					<label>Password:</label>
-					<input type="password" name="password" size="40" />
-				</fieldset>
-
-				<fieldset title="Thread 2">
-					<legend>description two</legend>
-
-					<label>Nick Name:</label>
-					<input type="text" size="30" />
-
-					<label>Bio:</label>
-					<textarea name="bio" rows="5" cols="60"></textarea>
-				</fieldset>
-	
-				<fieldset title="Thread 3">
-					<legend>description three</legend>
-
-					<label>Birthday:</label>
-					<select name="day">
-						<option></option>
-						<option>23</option>
-					</select>
-
-					<select>
-						<option>10</option>
-					</select>
-
-					<select>
-						<option>1984</option>
-					</select>
-
-					<label>Site:</label>
-					<input type="text" name="site" size="40" />
-				</fieldset>
-	
-				<input type="submit" class="finish" value="Finish!" />
-			</form>
     </body>
 </html>
  

@@ -152,7 +152,7 @@
   $page = ob_get_contents(); 
 
   //classe do controle 
-  $class = 'index.php?action=';
+  $class = '?action=';
   
   // Descarta o conteudo do Buffer
   ob_end_clean(); 

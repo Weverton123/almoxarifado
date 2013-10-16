@@ -1,7 +1,8 @@
 <?php   if(!defined('BASEPATH')) exit('Falha no carregamento do BASEPATH!');
   //Ativa o Buffer que armazena o conteúdo principal da página
-  ob_start();
-//  seguranca_arq();
+seguranca_arq();
+ob_start();
+
 session_start();
 
 if(isset($_SESSION['session']['acoes']['idusuario'])){
@@ -25,13 +26,14 @@ if(isset($_SESSION['session']['acoes']['idusuario'])){
    }
    if(isset($_REQUEST['deletarUsu'])){
        $id = $_REQUEST['deletarUsu'];
+       $control = 'login';
        $action  = 'deletarusu';
               
        $_vals = array( 'idusuario' => $id );
        
        $_SESSION['session']['acoes'] = $_vals;
        
-       redirecionar("?action={$action}");
+       redirecionar("?control={$control}&action={$action}");
    }  
    
 ?>
@@ -62,7 +64,7 @@ if(isset($_SESSION['session']['acoes']['idusuario'])){
                       ."<td>{$ls->getSetor_idsetor()}</td>"
                       ."<td class='center'>
                        <a href='?editarUsu={$ls->getIdusuario()}&action=usuario' title='Editar' ><img alt='editar' src='".BASEIMAGES."editar.png' /></a>
-                       <a href='?deletarUsu={$ls->getIdusuario()}&action=usuario'title='Excluir' ><img alt='excluir' src='".BASEIMAGES."excluir.png' /></a></td>"
+                       <a href='?deletarUsu={$ls->getIdusuario()}&action=usuario' title='Excluir' ><img alt='excluir' src='".BASEIMAGES."excluir.png' /></a></td>"
                       ."</tr>"
                               
                   ;

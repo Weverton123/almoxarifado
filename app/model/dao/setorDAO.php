@@ -1,10 +1,74 @@
-<?php if(!defined('BASEPATH')) exit('Falha no carregamento do script!');
-
+<?php if(!defined('BASEPATH')) exit(header('Location: ./../../../index.php'));
+//seguranca_arq();
 //require_once (BASEMODEL.'conexaoBD.php');
 require_once (BASEMODELCLASS.'setorClass.php');
 
 class setorDAO{
+    
+    /*
+    * Altera nome
+    * Recebe array como parametro
+    */
+    public function alterarnome($idsetor,$nome){
 
+        $retorno = 0;
+
+        # Faz conex�o
+        $conexao = new conexaoBanco();
+        $conexao->conectar();
+
+        # Executa comando SQL
+        $stmt = $conexao->pdo->prepare('UPDATE setor SET nome = ?  WHERE idsetor = ?');
+
+        # Seta Atributos nulos
+
+
+        # Parametros
+        $stmt->bindValue(1,$nome);
+        $stmt->bindValue(2,$idsetor);
+
+        try{
+            $retorno = $stmt->execute();
+        }
+        catch (PDOException $e) {
+            echo 'Erro: '.$e->getMessage();
+            $retorno = -1;
+        }
+
+        return $retorno;
+    }
+     /*
+    * Altera nome
+    * Recebe array como parametro
+    */
+    public function alterarcodigo($idsetor,$codigo){
+
+        $retorno = 0;
+
+        # Faz conex�o
+        $conexao = new conexaoBanco();
+        $conexao->conectar();
+
+        # Executa comando SQL
+        $stmt = $conexao->pdo->prepare('UPDATE setor SET codigo = ?  WHERE idsetor = ?');
+
+        # Seta Atributos nulos
+
+
+        # Parametros
+        $stmt->bindValue(1,$codigo);
+        $stmt->bindValue(2,$idsetor);
+
+        try{
+            $retorno = $stmt->execute();
+        }
+        catch (PDOException $e) {
+            echo 'Erro: '.$e->getMessage();
+            $retorno = -1;
+        }
+
+        return $retorno;
+    }
     /*
     * Altera
     * Recebe array como parametro
@@ -43,7 +107,10 @@ class setorDAO{
     * Insere dados recebendo valores via par�metro
     * ---------------------------------------------
     */
-    public function incluir($dados){
+    public function incluir($nome,$codigo){
+        
+        $retorno = 0;
+        
         # Faz conex�o
         $conexao = new conexaoBanco();
         $conexao->conectar();
@@ -53,13 +120,14 @@ class setorDAO{
 
 
 
-			$stmt->bindValue(1,$dados->getNome());
-                        $stmt->bindValue(2,$dados->getCodigo());
+			$stmt->bindValue(1,$nome);
+                        $stmt->bindValue(2,$codigo);
 
             $retorno = $stmt->execute();
         }
         catch ( PDOException $ex ){  
             echo 'Erro: ' . $ex->getMessage(); 
+            $retorno = -1;
         }
 
         return $retorno;
@@ -67,17 +135,17 @@ class setorDAO{
     /*
     * Obtem por Pk
     */
-    public function ObterPorPK($pk){
-
+    public function ObterPorPK($codigo){
+        
     	# Faz conex�o
 	    $conexao = new conexaoBanco();
 	    $conexao->conectar();
 
 	    # Executa comando SQL
-	    $stmt = $conexao->pdo->prepare('SELECT idsetor, nome, codigo FROM setor WHERE idsetor = ? OR nome = ? OR codigo = ?');
+	    $stmt = $conexao->pdo->prepare('SELECT nome, codigo FROM setor WHERE idsetor = ? OR nome = ? OR codigo = ?');
 
 	    # Passando os valores a serem usados
-    	$dados = array($pk,$pk,$pk);
+    	$dados = array($codigo,$codigo,$codigo);
     	$stmt->execute($dados);
     	$retorno = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if($retorno !=NULL){
@@ -87,9 +155,8 @@ class setorDAO{
     	foreach( $retorno as $row ){
 
     		#Atribui valores
-		    $setorClass->setIdsetor($row['idsetor']);
 		    $setorClass->setNome($row['nome']);
-    	}
+    	}           $setorClass->setCodigo($row['codigo']);
 
         return $setorClass;
         
