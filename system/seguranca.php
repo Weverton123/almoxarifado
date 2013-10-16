@@ -8,7 +8,7 @@ require_once (BASEMODELCLASS.'menuClass.php');
 
  session_start();
      function seguranca_arq(){
-    
+      
         if(isset($_SESSION['session']['logado'])){//verifica se usuario está logado e para verificar se ele tem acesso a página
           $menuDisp = unserialize($_SESSION['session']['logado']);
           $menu = new menuClass();
@@ -26,9 +26,7 @@ require_once (BASEMODELCLASS.'menuClass.php');
           }
 
           if(!$acesso){//se o acesso for FALSE
-            if($_REQUEST['action']=='minhaarea')
-             redirecionar('?action=index');
-            else redirecionar('?action=minhaarea');
+             redirecionar('?action=minhaarea');
               
           }
          
@@ -36,7 +34,7 @@ require_once (BASEMODELCLASS.'menuClass.php');
         }
         else{
             //echo 'nao logado';
-            redirecionar();
+            redirecionar('?action=index');
         }
         
         
