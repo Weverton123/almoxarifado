@@ -2,7 +2,7 @@
   //Ativa o Buffer que armazena o conteúdo principal da página
 seguranca_arq();  
 ob_start();
-
+session_cache_expire(0.1);
 session_start();
 
 require_once (BASEMODEL.'conexaoBD.php');
@@ -13,7 +13,7 @@ if(!isset($_SESSION['session']['acoes']['idsetor'])){
 }
 
  if(isset($_REQUEST['alterarN'])){//validação de formulário para alterar nome do setor
-          if(isset($_REQUEST['newname'])){//valida se o campo nome para editar foi informado
+          if(isset($_REQUEST['newname'])&& $_REQUEST['newname']!= NULL){//valida se o campo nome para editar foi informado
               $control = 'setor';//controle no qual tem os metodos para setor
               $action = 'alterarnome';//ação
               
@@ -27,7 +27,7 @@ if(!isset($_SESSION['session']['acoes']['idsetor'])){
           }  
     } 
  if(isset($_REQUEST['alterarC'])){//validação de formulário para alterar controle
-          if(isset($_REQUEST['newcod'])){//valida se o campo codigo para editar foi informado
+          if(isset($_REQUEST['newcod'])&& $_REQUEST['newcod']!= NULL){//valida se o campo codigo para editar foi informado
               $control = 'setor';//controle no qual tem os metodos para setor
               $action = 'alterarcodigo';//ação
               

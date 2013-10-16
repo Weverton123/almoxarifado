@@ -5,7 +5,7 @@ ob_start();
 
   require_once (BASEMODEL.'conexaoBD.php');
   require_once (BASEMODELDAO.'categoriaDAO.php');
-
+session_cache_expire(0.1);
 session_start();
 
 

@@ -3,7 +3,7 @@
   seguranca_arq();
   ob_start();
   
-
+session_cache_expire(0.1);
   session_start();
   
   if(isset($_SESSION['session']['acoes']['idsetor'])){

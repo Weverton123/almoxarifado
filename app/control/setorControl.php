@@ -59,6 +59,7 @@ class setor {
         $tipo = new setorDAO();  
              $idsetor   = $_SESSION['session']['acoes']['idsetor'];
              $nome      = $_SESSION['session']['acoes']['newname'];  
+        if(!$tipo->ObterPorPK($idsetor)){    
         $ret = $tipo->alterarnome($idsetor, $nome);
      
         if($ret > 0){
@@ -68,7 +69,11 @@ class setor {
               $_SESSION['session']['acoes']['msg']='Falha na alteração!';  
             }
      redirecionar('?action=setor');
-      
+        }
+        else{
+              $_SESSION['session']['acoes']['msg']='Falha: nome ja cadastrado!';  
+              redirecionar('?action=editarsetor');
+        }
     }
     
     public function alterarcodigo(){

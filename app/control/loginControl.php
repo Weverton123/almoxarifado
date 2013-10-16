@@ -14,13 +14,14 @@ require_once (BASEMODELDAO.'menuDAO.php');//metodos CRUD do menu
  */
 
  //Inicio a sessão para poder utilizar a session com os valores das requisições
- session_start();
+// session_start();
 
 class login {   
 
 
     public function validar(){
-        
+     //Inicio a sessão para poder utilizar a session com os valores das requisições
+    session_start();    
     //armazeno na variavel $var os valores na sessão vals
     $var = $_SESSION['session'];
     //Termina a sessão atual
@@ -66,15 +67,16 @@ class login {
     }
   
     public function cadastrar(){
+        session_cache_expire(0.1);
+        session_start();
         $usu = new usuarioClass();
         $usu->setNome($_SESSION['session']['acoes']['nome']);
         $usu->setLogin($_SESSION['session']['acoes']['login']);
         $usu->setSenha($_SESSION['session']['acoes']['senha']);
         $usu->setSetor_idsetor($_SESSION['session']['acoes']['setor']);
         $usu->setTipousuario_idtipousuario($_SESSION['session']['acoes']['tipousu']);
-        
         $usuario = new usuarioDAO();
-        $ret = $usuario->ObterPorPK($usu->getLogin());
+        $ret = $usuario->ObterPorPK($usu->getLogin()); 
         if($ret){
             $_SESSION['session']['acoes']['msg'] = 'Login já cadastrado!';
         }
@@ -94,19 +96,23 @@ class login {
                 }
                catch (Exception $ex){
                  $_SESSION['session']['acoes']['msg'] = 'Falha no cadastro das permissões!';
+                  redirecionar('?action=cadastrarusu');
                }
             }
             else {
                $_SESSION['session']['acoes']['msg'] = 'Falha ao cadastrar usuário!';
+               redirecionar('?action=cadastrarusu');
             }
             
         }
         
-        redirecionar('?action=usuario');
+       redirecionar('?action=usuario');
         
      }
    
     public function alterarsenha(){
+        session_cache_expire(0.1);
+        session_start();
         $usuario = new usuarioDAO();
         
         $usu = new usuarioClass();
@@ -137,6 +143,8 @@ class login {
     }
    
     public function alterarlogin(){
+        session_cache_expire(0.1);
+        session_start();
         $flag = 0;
         
         $usuario = new usuarioDAO();
@@ -192,6 +200,8 @@ class login {
     }
     
     public function alterarnome(){
+        session_cache_expire(0.1);
+        session_start();
         $flag = 0;
         
         $usuario = new usuarioDAO();
@@ -246,7 +256,9 @@ class login {
     }
 
     public function alterarperm(){
-     $perm = new permissaoDAO();
+        session_cache_expire(0.1);
+        session_start();
+        $perm = new permissaoDAO();
                 $listPerm = $_SESSION['session']['acoes']['permissao'];
                 $iduser   = $_SESSION['session']['acoes']['idusuario'];
                 
@@ -259,7 +271,9 @@ class login {
     }
     
     public function alteraradmin(){
-     $tipo = new usuarioDAO();  
+        session_cache_expire(0.1);
+        session_start();
+        $tipo = new usuarioDAO();  
              $adm = $_SESSION['session']['acoes']['newtipo'];
              $iduser   = $_SESSION['session']['acoes']['idusu'];
                
@@ -269,7 +283,9 @@ class login {
      
     }
     public function deletarusu(){
-       // session_start();
+        session_cache_expire(0.1);
+        session_start();
+        // session_start();
 
         if(!isset($_SESSION['session']['acoes']['idusuario'])){
             redirecionar('?action=usuario');
