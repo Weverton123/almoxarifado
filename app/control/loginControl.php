@@ -44,7 +44,7 @@ class login {
            $lista_menu[$i] = $menu->ObterPorPK($ln->getMenu_idmenu());//obtem o nome de cada menu disponivel para o usuario
            $i++;
        }
-        
+      
             //$_SESSION['erro'] = 'Usuario logado com sucesso!';
           /* foreach ($lista_menu as $ms){
             echo $ms->getNome().' ';

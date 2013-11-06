@@ -1,6 +1,6 @@
 <?php if(!defined('BASEPATH')) exit(header('Location: ./../../../index.php'));
 
-require_once (BASEMODEL.'conexaoBD.php');
+//require_once (BASEMODEL.'conexaoBD.php');
 require_once (BASEMODELCLASS.'statusClass.php');
 
 class statusDAO{

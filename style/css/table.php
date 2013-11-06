@@ -583,4 +583,11 @@ div.box {
 	background-color: #E5E5FF;
 }
 
+.add {
+    background:url(<?php echo BASEIMAGES.'plus.png' ?>) no-repeat center ;
+}
+.campo{
+    width: 150px;
+    
+}
 </style>

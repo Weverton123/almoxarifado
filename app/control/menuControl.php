@@ -129,7 +129,11 @@ class menu extends controller {
     public function requisicao(){
         $this->view('requisicao', $this->res);
     }
-
+    public function cadastrarrequisicao(){
+        $this->view('cadastrarrequisicao', $this->res);
+    }
+    
+    
     //MENU PARA GERENCIAR MATERIAL E REQUISIÇÕES
     public function requisicoes(){
        $this->view('requisicoes',  $this->res);

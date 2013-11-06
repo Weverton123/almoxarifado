@@ -1,7 +1,8 @@
 <?php if(!defined('BASEPATH')) exit(header('Location: ./../../../index.php'));
 
-require_once (BASEMODEL.'conexaoBD.php');
+//require_once (BASEMODEL.'conexaoBD.php');
 require_once (BASEMODELCLASS.'requisicaoClass.php');
+require_once (BASEMODELDAO.'statusDAO.php');
 
 class requisicaoDAO{
 

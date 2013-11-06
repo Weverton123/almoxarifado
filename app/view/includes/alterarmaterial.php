@@ -122,7 +122,7 @@ if(isset($_REQUEST['alterarD'])){//validação de formulário para alterar nome 
         <input type="number" name="newquantidade" style="width:360px;height:30px; text-align:center;">
     </p>
     <p>
-        <input type="submit" name="alterarQ" value="Alterar código">
+        <input type="submit" name="alterarQ" value="Alterar Quantidade">
     </p>
 </form>
 <form method="POST">

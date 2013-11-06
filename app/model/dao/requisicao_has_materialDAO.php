@@ -1,6 +1,6 @@
 <?php if(!defined('BASEPATH')) exit(header('Location: ./../../../index.php'));
 
-require_once (BASEMODEL.'conexaoBD.php');
+//require_once (BASEMODEL.'conexaoBD.php');
 require_once (BASEMODELCLASS.'requisicao_has_materialClass.php');
 
 class requisicao_has_materialDAO{
