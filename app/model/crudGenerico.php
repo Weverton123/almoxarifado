@@ -5,15 +5,6 @@
         private $senha;
         private $pdo;  
         
-        private function setDsn($dsn){
-            $this->dsn = $dsn ;
-        }
-        private function setUser($user){
-            $this->user = $user;
-        }
-        private function setSenha($senha){
-            $this->senha = $senha;
-        }
        function monta(){
            
            $this->dsn = "{$this->db_driver}:host={$this->db_host};port={$this->db_port};dbname={$this->db_name}";
