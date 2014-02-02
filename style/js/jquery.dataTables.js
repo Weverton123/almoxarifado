@@ -9304,7 +9304,7 @@ var urlGet = getUrlVars();
 			 *      } );
 			 *    } );
 			 */
-			"sInfo": "Exibindo _START_ de _END_ de um total de _TOTAL_ "+urlGet['action']+"(s)encontrado(s)",
+			"sInfo": "Exibindo _START_ de _END_ de um total de _TOTAL_  registro(s)encontrado(s)",
 		
 		
 			/**

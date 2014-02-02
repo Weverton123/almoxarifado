@@ -1,10 +1,7 @@
 ﻿<?php if(!defined('BASEPATH')) exit('Falha no carregamento do BASEPATH!');
   //Ativa o Buffer que armazena o conteúdo principal da página
    seguranca_arq();
-ob_start();
 
-  session_cache_expire(0.1);
-   session_start();
    
  
 ?>

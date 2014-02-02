@@ -5,7 +5,7 @@ $port = NULL;
 $user = NULL;
 $senha = NULL; 
 $dbname = NULL;
-if(isset($_REQUEST['install'])){
+if(isset($_POST['install'])){
 if(ini_get('allow_url_fopen') == 1){
 // Abre ou cria o arquivo exemplo1.txt
         // "a" representa que o arquivo é aberto para ser escrito
@@ -24,12 +24,12 @@ if(ini_get('allow_url_fopen') == 1){
  */
   class configDB{
 
-            protected \$db_host  = '{$_REQUEST['host']}';
+            protected \$db_host  = '{$_POST['host']}';
             protected \$db_driver = 'mysql';
-            protected \$db_port ='{$_REQUEST['port']}';
-            protected \$db_user = '{$_REQUEST['user']}';
-            protected \$db_senha = '{$_REQUEST['senha']}';
-            protected \$db_name = '{$_REQUEST['dbname']}';
+            protected \$db_port ='{$_POST['port']}';
+            protected \$db_user = '{$_POST['user']}';
+            protected \$db_senha = '{$_POST['senha']}';
+            protected \$db_name = '{$_POST['dbname']}';
    }");
 
         fclose($fp);

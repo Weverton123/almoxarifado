@@ -1,7 +1,6 @@
 <?php
 if(!defined('BASEPATH')) exit('Falha no carregamento do script!');  
-//Ativa o Buffer que armazena o conteúdo principal da página
-  ob_start();
+
 ?>
 <!--
 	Início de conteúdo
@@ -32,17 +31,3 @@ if(!defined('BASEPATH')) exit('Falha no carregamento do script!');
 <!--
 	Fim de conteúdo
 -->
-<?php
-   // titulo pagina
-   $titulo_page = 'AlmoXerife: Quem somos';
-  // page recebe o conteudo do buffer
-  $page = ob_get_contents(); 
-
-  //classe do controle 
-  $class = '?action=';
-  
-  // Descarta o conteudo do Buffer
-  ob_end_clean(); 
-  //Include com o Template
-  include(BASEVIEW."base.php");
-?>

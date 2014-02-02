@@ -1,67 +1,109 @@
 <?php if(!defined('BASEPATH')) exit('Falha no carregamento do BASEPATH!');
-  //Ativa o Buffer que armazena o conteúdo principal da página
-  seguranca_arq();
-  ob_start();
-  
-session_cache_expire(0.1);
-  session_start();
-  
-  if(isset($_SESSION['session']['acoes']['idsetor'])){
-     unset($_SESSION['session']['acoes']['idsetor']);//limpa sessão da memoria
-  }
- 
-  require_once (BASEMODEL.'conexaoBD.php');
-  require_once (BASEMODELDAO.'setorDAO.php');
-  
-     if(isset($_REQUEST['editarSetor'])){
-      $id = $_REQUEST['editarSetor'];
-       $action  = 'editarsetor';
-              
-       $_vals = array( 'idsetor' => $id );
-              
-       $_SESSION['session']['acoes'] = $_vals;
-                    
-       redirecionar("?action={$action}");
-   }
-   if(isset($_REQUEST['deletarSetor'])){
-       $id = $_REQUEST['deletarSetor'];
-       $control = 'setor';
-       $action  = 'deletarsetor';
-              
-       $_vals = array( 'idsetor' => $id );
-       
-       $_SESSION['session']['acoes'] = $_vals;
-       
-       redirecionar("?control={$control}&action={$action}");
-   }  
-   
+  #seguranca_arq();   
+        foreach ($val as $array) {
+           foreach ($array as $key => $value) {
+                   if( $key == 'setores'   ){   $setores = ($value);   
+                   break;
+                   }
+           }         
+         } 
+         
+        $usuario = $_SESSION['session']['logado']['permissao']['action'];  
+      $cadastrar = FALSE; 
+        $deletar = FALSE; $deletar_txt = ''; 
+        $editar  = FALSE; $editar_txt  = '';
+      $barra_txt = '';
+        foreach ($usuario as $ls){
+            if($ls['link']=='cadastrarsetor'){
+                $cadastrar = TRUE;
+            }
+            if($ls['link']=='deletarsetor'){
+                $deletar = TRUE;
+               }
+            if($ls['link']=='editarsetor'){
+                $editar = TRUE;
+            }   
+        } 
 ?>
-
-<a href="?action=cadastrarsetor"><img src="<?=BASEIMAGES?>add_user.png" />Adicionar novo</a>
 <div class="modulo">
+<?php
+    if($cadastrar):
+?>
+<a href="#dialog" name="modal" ><img src="<?=BARRA.url_base.BARRA.BASEIMAGES?>add_user.png" />Adicionar novo</a>
+<div id="dialog" class="window" >
+    
+    <a href="#" class="close">Fechar [X]</a><br />
+    <div class="content_dialog">
+    <h3>Inserir setor</h3>
+            <form  action="<?=BARRA.url_base?>/setor/cadastrarsetor" method="post">
+                <div class="pos_center">
+                    <p>
+                            <strong>Nome do setor</strong><br />
+                            <input type="text" name="nomeSetor" value="" required="required" />
+                    </p>
+                    <p>
+                            <strong>Código do setor</strong><br />
+                            <input type="text" name="codigoSetor" value="" required="required" />
+                    </p>
+                    <p>
+                        <input type="submit" name="insertS" value="Inserir setor" />
+                    </p>
+                </div>
+            </form>
+    </div>
+</div>
+<?php
+    endif;
+?>
+        <?php 
+              if($editar || $deletar){
+                  $th_inicio = "<th>";
+                  $th_fim    = "</th>";  
+                  $td_inicio = "<td class='center'>";
+                  $td_fim    = "</td>";
+                  $editar_txt    = $editar ? 'Editar' : ''; 
+                  $barra_txt     = ($editar && $deletar) ? '/' : ''; 
+                  $deletar_txt   = $deletar ? 'Excluir' : ''; 
+                }
+              else{
+                  $th_inicio = '';
+                  $th_fim    = '';
+                  $td_inicio = '';
+                  $td_fim    = '';
+              } 
+        ?>
 	<h3>Listar setores</h3>
-        <table cellpadding="0" cellspacing="0" border="0" class="display" id="usuario">
+        <table cellpadding="0" cellspacing="0" border="0" class="display" name="datatable">
 	<thead>
 		<tr>
 			<th>Nome</th>
 			<th>Código</th>
-                        <th>Selecionar</th>
+                        <?=
+                            
+                                 $th_inicio   
+                                .$editar_txt
+                                .$barra_txt
+                                .$deletar_txt
+                                .$th_fim
+                            
+                         ?>
 		</tr>
 	</thead>
         <tbody>
         
-        <?php $setor = new setorDAO();
-              $ret = $setor->ObterPorTodos();  
-              foreach ($ret as $ls){
-                  echo 
-                      "<tr class='gradeA' onClick='clicado(this);' 
-                      onMouseOver='selecionado(this);' onMouseOut='n_selecionado(this);'>"
-                      ."<td>{$ls->getNome()}</td>"
-                      ."<td>{$ls->getCodigo()}</td>"
-                      ."<td class='center'>
-                       <a href='?editarSetor={$ls->getIdsetor()}&action=setor' title='Editar' ><img alt='editar' src='".BASEIMAGES."editar.png' /></a>
-                       <a href='?deletarSetor={$ls->getIdsetor()}&action=setor' title='Excluir' ><img alt='excluir' src='".BASEIMAGES."excluir.png' /></a>                   
-                       </td>"
+        <?php            
+              foreach ($setores as $ls){
+       $deletar_setor = ($deletar) ? "<a href='".BARRA.url_base."/setor/deletarsetor/idsetor/{$ls['idsetor']}' onclick=\"return confirm('Deseja realmente excluir o setor {$ls['nome']}?');\"  title='Excluir' ><img alt='excluir' src='".BARRA.url_base.BARRA.BASEIMAGES."excluir.png' /></a>":''; 
+       $editar_setor  = ($editar)  ? "<a href='".BARRA.url_base."/menu/editarsetor/id/{$ls['idsetor']}' onclick=\"return confirm('Deseja realmente editar o setor {$ls['nome']}?');\" title='Editar' ><img alt='editar' src='".BARRA.url_base.BARRA.BASEIMAGES."editar.png' /></a>":'';                     
+       
+                   echo 
+                      "<tr>"
+                      ."<td>".$ls['nome']."</td>"
+                      ."<td>".$ls['codigo']."</td>"
+                      .$td_inicio
+                      .$editar_setor
+                      .$deletar_setor
+                      .$td_fim
                       ."</tr>"
                               
                   ;
@@ -71,15 +113,3 @@ session_cache_expire(0.1);
       </tbody>
 </table>
 </div>
-
-<?php
-   // titulo pagina
-   $titulo_page = 'AlmoXerife: Setores';
-  // page recebe o conteudo do buffer
-  $conteudo = ob_get_contents(); 
-
-  
-  // Descarta o conteudo do Buffer
-  ob_end_clean(); 
-  //Include com o Template
-  include_once(BASEVIEWINC."clientes.php");

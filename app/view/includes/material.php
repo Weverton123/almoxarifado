@@ -1,42 +1,8 @@
 ﻿<?php if(!defined('BASEPATH')) exit('Falha no carregamento do BASEPATH!');
   //Ativa o Buffer que armazena o conteúdo principal da página
    seguranca_arq();
-ob_start();
 
-  session_cache_expire(0.1);
-   session_start();
   
-if(isset($_SESSION['session']['acoes']['idmaterial'])){
-   unset($_SESSION['session']['acoes']['idmaterial']);//limpa sessão da memoria
-}
-   
- require_once (BASEMODEL.'conexaoBD.php');
- require_once (BASEMODELDAO.'materialDAO.php');
- //require_once (BASEMODELDAO.'categoriaDAO.php');
- 
-  if(isset($_REQUEST['editarMaterial'])){
-      $id = $_REQUEST['editarMaterial'];
-       $action  = 'editarmaterial';
-              
-       $_vals = array( 'idmaterial' => $id );
-              
-       $_SESSION['session']['acoes'] = $_vals;
-                    
-       redirecionar("?action={$action}");
-   }
-   if(isset($_REQUEST['deletarMaterial'])){
-       $id = $_REQUEST['deletarMaterial'];
-       $control = 'material';
-       $action  = 'deletarmaterial';
-              
-       $_vals = array( 'idmaterial' => $id );
-       
-       $_SESSION['session']['acoes'] = $_vals;
-       
-       redirecionar("?control={$control}&action={$action}");
-   }  
- 
- 
 ?>
 <!--
 	Início de conteúdo
@@ -56,7 +22,7 @@ if(isset($_SESSION['session']['acoes']['idmaterial'])){
 	</thead>
         <tbody>
         
-        <?php 
+        <?php /*
                // $cat = new categoriaDAO(); //
               $mat = new materialDAO();
               $ret = $mat->ObterPorTodos();
@@ -78,29 +44,13 @@ if(isset($_SESSION['session']['acoes']['idmaterial'])){
                       ."</tr>"
                               
                   ;
-              }
+              }*/
         ?>
          
       </tbody>
 </table>
 </div>
 
-<?php
- 
-?>
 <!--
 	Fim de conteúdo
 -->
-<?php
-   // titulo pagina
-   $titulo_page = 'AlmoXerife: REQUISIÇÕES';
-  // page recebe o conteudo do buffer
-  $conteudo = ob_get_contents(); 
-
-  //classe do controle 
-  $class = '?action=';
-  
-  // Descarta o conteudo do Buffer
-  ob_end_clean(); 
-  //Include com o Template
-  include_once (BASEVIEWINC."requisicoes.php");

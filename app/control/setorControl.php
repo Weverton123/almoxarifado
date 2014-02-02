@@ -1,5 +1,6 @@
 <?php if(!defined('BASEPATH')) exit(header('Location: ./../../index.php'));
-
+#seguranca_arq();
+#sleep(1);
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -11,114 +12,97 @@
  * @author italo
  */
 
-require_once (BASEMODEL.'conexaoBD.php');//realiza a conexao com o banco
-require_once (BASEMODELDAO.'setorDAO.php');
-
-session_start();
-
-class setor {    
-//put your code here
+class setor extends controller{    
     
-    public function inserir(){
-        if(isset($_SESSION['session']['acoes']['setorname'])&&
-         isset($_SESSION['session']['acoes']['setorcod']) ){
-        
-          $nome = $_SESSION['session']['acoes']['setorname'];
-         $codigo = $_SESSION['session']['acoes']['setorcod'];
-          
-      $setor = new setorDAO();
-      $ret = $setor->ObterPorPK($nome, $codigo);
-      //print_r($ret);
-      if(!$ret){
-          //echo 'setor pode ser cadastrado';
-           $ret2 = $setor->incluir($nome,$codigo);
-
-            if(!$ret2 > 0){
-                 $_SESSION['session']['acoes']['msg'] = 'Falha ao tentar cadastrar setor!';
-                 redirecionar('?action=cadastrarsetor');
-
-            }
-            else {
-                $_SESSION['session']['acoes']['msg'] = 'Setor cadastrado com sucesso!';
-                redirecionar('?action=setor');
-
-            }          
-      }
-       else {
-                     
-          $_SESSION['session']['acoes']['msg'] = 'Setor ou Código ja cadastrado!';
-          redirecionar('?action=cadastrarsetor');
-      }
-        //
-      }
-        
+    public function __construct() {
+        parent::__construct();
     }
+
+   public function alterarnomesetor($setor){
+        if(isset($_POST['newname']) && $_POST['newname'] != NULL){
+            $this->editar(array('nome'=>$_POST['newname']), $setor[0]['parametro'].'='.$setor[0]['valor']);
+          }
+        else {
+            $_SESSION['msg'] = "Novo nome não foi informado!";
+          }
+     redirecionar('menu/editarsetor/'.$setor[0]['parametro'].'/'.$setor[0]['valor']);
+   }
     
-    public function alterarnome(){
-        echo 'chegou';
-        $tipo = new setorDAO();  
-             $idsetor   = $_SESSION['session']['acoes']['idsetor'];
-             $nome      = $_SESSION['session']['acoes']['newname'];  
-        if(!$tipo->ObterPorPK($idsetor)){    
-        $ret = $tipo->alterarnome($idsetor, $nome);
-     
-        if($ret > 0){
-              $_SESSION['session']['acoes']['msg']='Alteração realizada com sucesso!';
-            }
-        else{
-              $_SESSION['session']['acoes']['msg']='Falha na alteração!';  
-            }
-     redirecionar('?action=setor');
+    public function alterarcodigosetor($setor){
+         if(isset($_POST['newcodigo']) && $_POST['newcodigo'] != NULL){
+             $codigo = addslashes($_POST['newcodigo']);
+            $ret = crud::consultar(array('codigo'),'setor', "codigo='{$codigo}'" );
+            if(empty($ret))
+                $this->editar(array('codigo'=>$_POST['newcodigo']), $setor[0]['parametro'].'='.$setor[0]['valor']);
+            else
+                $_SESSION['msg'] = 'Falha: O código informado já foi cadastrado!';
         }
-        else{
-              $_SESSION['session']['acoes']['msg']='Falha: nome ja cadastrado!';  
-              redirecionar('?action=editarsetor');
+        else {
+            $_SESSION['msg'] = "Novo código não foi informado!";   
         }
-    }
-    
-    public function alterarcodigo(){
-     $tipo = new setorDAO();  
-             $idsetor   = $_SESSION['session']['acoes']['idsetor'];
-             $cod       = $_SESSION['session']['acoes']['newcod'];  
-        $ret = $tipo->alterarcodigo($idsetor, $cod);
-     
-        if($ret > 0){
-              $_SESSION['session']['acoes']['msg']='Alteração realizada com sucesso!';
-            }
-        else{
-              $_SESSION['session']['acoes']['msg']='Falha na alteração!';  
-            }
-     redirecionar('?action=setor');   
-    }
+     redirecionar('menu/editarsetor/'.$setor[0]['parametro'].'/'.$setor[0]['valor']);
+   }
 
-        public function deletarsetor(){
-         //   echo 'chegou';
-        //session_start();
+    private function editar(array $array,$where){
+        $return = crud::atualizar('setor', $array, $where );
+        if($return > 0){ 
+          $_SESSION['msg'] = "Editado com sucesso!";
+        }
+    else{ 
+         $_SESSION['msg'] = "Falha na edição!";
+       }
+      redirecionar("menu/setor");
+    }
+   
+    public function deletarsetor($setor){
+       $idsetor = addslashes($setor[0]['valor']);
+       $ret = crud::consultar(array('nome'), 'usuario', "setor_idsetor='{$idsetor}'" );
+       if(empty($ret)){
+            $return = crud::deletar('setor', "idsetor={$setor[0]['valor']}"); 
+            if($return > 0){ 
+               $_SESSION['msg'] = 'Excluido com sucesso!';
+             }
+         else{ 
+              $_SESSION['msg'] = 'Falha na exclusão!';
+            }
+       }
+       else
+           $_SESSION['msg'] = 'Falha: Existe(m) usuário(s) cadastrado(s) no setor!';
        
-        if(!isset($_SESSION['session']['acoes']['idsetor'])){
-            
-            redirecionar('?action=setor');
-        }
-        if(verifica_acesso()){
-        
-         $set = $_SESSION['session']['acoes']['idsetor'];
-
-         $setor = new setorDAO();
-         $ret =  $setor->Deletar($set);//
-
-         if($ret > 0){
-            $_SESSION['session']['acoes']['msg']='Setor excluído com sucesso!';
-         }
-         else{
-            $_SESSION['session']['acoes']['msg']='Falha ao tentar excluir setor!';  
-         }
-        }
-        else{
-           $_SESSION['session']['acoes']['msg']='Usuário sem permissão para realizar exclusão!';
-        }
-        redirecionar('?action=setor');
+     redirecionar("menu/setor");
     }
     
+    public function cadastrarsetor(){
+       if(isset($_POST['nomeSetor']) && $_POST['nomeSetor']!= NULL &&
+          isset($_POST['codigoSetor']) && $_POST['codigoSetor']!= NULL){ 
+           
+       $return = crud::inserir(array('nome' => $_POST['nomeSetor'], 'codigo' => $_POST['codigoSetor']), 'setor');
+       if($return > 0){ 
+           $_SESSION['msg'] = 'Cadastro realizado com sucesso!';
+        }
+       else{ 
+          $_SESSION['msg'] = 'Falha no cadastro!';
+       }
+       }
+       else {
+             $_SESSION['msg'] = 'Falha no cadastro!';    
+       }
+     redirecionar("menu/setor");
+   } 
+    
+###==============TESTES===============###
+        public function teste(){
+          $arr  = array(
+            'nome' => 'italo',
+            'idade' => 22,
+            'sexo' => 'masculino'           
+        );
+       #echo json_encode($arr);
+        
+       #$setores = crud::consultar(array('*'), 'setor');
+       //echo json_encode($setores);
+        #var_dump($setores);
+    }
 }
-
+###=============TESTES================###
 

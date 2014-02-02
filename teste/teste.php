@@ -1,4 +1,5 @@
 <?php
+/*
 $msg = '';
 echo $msg;
 if(isset($_REQUEST['cad'])){
@@ -14,7 +15,7 @@ if(isset($_REQUEST['cad'])){
         $msg = 'SUCESSO!'.$fp; 
         fclose($fp);
         echo $msg ;
-    }
+    }*/
 ?>
 
     <form method="POST" action="">

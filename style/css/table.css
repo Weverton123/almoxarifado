@@ -1,5 +1,5 @@
-/*
- *  File:         demo_table.css
+    /*
+ *  File:         table.css
  *  CVS:          $Id$
  *  Description:  CSS descriptions for DataTables demo pages
  *  Author:       Allan Jardine
@@ -154,7 +154,7 @@ table.display thead th {
 	border-bottom: 1px solid black;
 	font-weight: bold;
 	cursor: pointer;
-	* cursor: hand;
+	*cursor: hand;
 }
 
 table.display tfoot th {
@@ -212,7 +212,7 @@ table.display thead td:active {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * DataTables row classes
  */
-table.display tr.odd.gradeA {
+table.display tr.odd.gradeA {/*Azul*/
 	background-color: #ddffdd;
 }
 
@@ -246,7 +246,7 @@ table.display tr.even.gradeU {
 
 
 tr.odd {
-	background-color: #E2E4FF;
+	background-color: #3366FF;
 }
 
 tr.even {
@@ -353,11 +353,11 @@ td.details {
 }
 
 table.display tr.even.row_selected td {
-	background-color: #B0BED9;
+	background-color: #3366FF;
 }
 
 table.display tr.odd.row_selected td {
-	background-color: #9FAFD1;
+	background-color: #3366FF;
 }
 
 
@@ -370,23 +370,23 @@ tr.odd td.sorting_1 {
 }
 
 tr.odd td.sorting_2 {
-	background-color: #DADCFF;
+	background-color: #D3D6FF;
 }
 
 tr.odd td.sorting_3 {
-	background-color: #E0E2FF;
+	background-color: #D3D6FF;
 }
 
 tr.even td.sorting_1 {
-	background-color: #EAEBFF;
+	background-color: #D3D6FF;
 }
 
 tr.even td.sorting_2 {
-	background-color: #F2F3FF;
+	background-color: #D3D6FF;
 }
 
 tr.even td.sorting_3 {
-	background-color: #F9F9FF;
+	background-color: #D3D6FF;
 }
 
 
@@ -401,27 +401,27 @@ tr.even td.sorting_3 {
 	  ee > e2
  */
 tr.odd.gradeA td.sorting_1 {
-	background-color: #c4ffc4;
+	background-color: #D3D6FF; /*#c4ffc4;*/
 }
 
 tr.odd.gradeA td.sorting_2 {
-	background-color: #d1ffd1;
+	background-color: #D3D6FF;/*#d1ffd1;*/
 }
 
 tr.odd.gradeA td.sorting_3 {
-	background-color: #d1ffd1;
+	background-color: #D3D6FF;/*#d1ffd1;*/
 }
 
 tr.even.gradeA td.sorting_1 {
-	background-color: #d5ffd5;
+	background-color: #E5E5FF;
 }
 
 tr.even.gradeA td.sorting_2 {
-	background-color: #e2ffe2;
+	background-color: #E5E5FF;/*#e2ffe2;*/
 }
 
 tr.even.gradeA td.sorting_3 {
-	background-color: #e2ffe2;
+	background-color: #E5E5FF;/*#e2ffe2;*/
 }
 
 tr.odd.gradeC td.sorting_1 {
@@ -498,45 +498,45 @@ tr.even.gradeU td.sorting_3 {
 
 
 /*
- * Row highlighting example
+ * Row highlighting 
  */
-.ex_highlight #example tbody tr.even:hover, #example tbody tr.even td.highlighted {
-	background-color: #ECFFB3;
+.ex_highlight #table tbody tr.even:hover, #table tbody tr.even td.highlighted {
+	background-color: #3366FF;
 }
 
-.ex_highlight #example tbody tr.odd:hover, #example tbody tr.odd td.highlighted {
+.ex_highlight #table tbody tr.odd:hover, #table tbody tr.odd td.highlighted {
 	background-color: #E6FF99;
 }
 
-.ex_highlight_row #example tr.even:hover {
+.ex_highlight_row #table tr.even:hover {
 	background-color: #ECFFB3;
 }
 
-.ex_highlight_row #example tr.even:hover td.sorting_1 {
-	background-color: #DDFF75;
+.ex_highlight_row #table tr.even:hover td.sorting_1 {
+	background-color: #3366FF;
 }
 
-.ex_highlight_row #example tr.even:hover td.sorting_2 {
+.ex_highlight_row #table tr.even:hover td.sorting_2 {
 	background-color: #E7FF9E;
 }
 
-.ex_highlight_row #example tr.even:hover td.sorting_3 {
+.ex_highlight_row #table tr.even:hover td.sorting_3 {
 	background-color: #E2FF89;
 }
 
-.ex_highlight_row #example tr.odd:hover {
+.ex_highlight_row #table tr.odd:hover {
 	background-color: #E6FF99;
 }
 
-.ex_highlight_row #example tr.odd:hover td.sorting_1 {
-	background-color: #D6FF5C;
+.ex_highlight_row #table tr.odd:hover td.sorting_1 {
+	background-color: #3366FF;
 }
 
-.ex_highlight_row #example tr.odd:hover td.sorting_2 {
+.ex_highlight_row #table tr.odd:hover td.sorting_2 {
 	background-color: #E0FF84;
 }
 
-.ex_highlight_row #example tr.odd:hover td.sorting_3 {
+.ex_highlight_row #table tr.odd:hover td.sorting_3 {
 	background-color: #DBFF70;
 }
 
@@ -574,4 +574,12 @@ div.box {
 	overflow: auto;
 	border: 1px solid #8080FF;
 	background-color: #E5E5FF;
+}
+
+.add {
+    background:url('../images/plus.png') no-repeat center ;
+}
+.campo{
+    width: 150px;
+    
 }

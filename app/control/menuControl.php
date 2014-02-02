@@ -1,115 +1,88 @@
 <?php  if(!defined('BASEPATH')) exit(header('Location: ./../../index.php'));
-//seguranca_arq();
+#seguranca_arq();
 /**
  * Description of menuControl
  * Serve para carregar exibir as view's
  * @author italo
  */
-//require_once (BASEMODEL.'conexaoBD.php');//realiza a conexao com o banco
-require_once (BASEMODELDAO.'usuarioDAO.php');
-require_once (BASEMODELDAO.'permissaoDAO.php');
-require_once (BASEMODELDAO.'menuDAO.php');
-   
+
+//echo 'VALOR DA COOKIE: '.$_COOKIE['nomeCookie'];
 
 class menu extends controller {
     
     //variavel $res serve para enviar paramentros de resultados para a view requisitada 
     //o valor dela antes de chegar na view passa pelo arquivo controller.php recebebendo
     //um outro nome de variável, a qual será utilizada dentro da view
-    private $res;
-    
+    private $res = array();
+    private $atr_page;
     function __construct() {
+        parent::__construct();
         $this->carregaMenu();
     }
 
     private function carregaMenu(){
-        session_start();
-        if(isset($_SESSION['session']['logado'])){ 
-            
-         //echo 'logado = true';
-         $vars = $_SESSION['session']['logado'];
-         //print_r($vars);
-         $vars = unserialize($vars);//disserializo o objeto armazenado na sessão
-         //print_r($vars);
-         $menu = new menuClass();//crio um objeto para armazenar o objeto trazido pela sessão
-         $menu = $vars;//armazeno na variavel $menu o objeto trazido pela sessão
-         $menulimitado = array();
-         //$limit = count($menu)>= 3 ? 3 : count($menu);//limita a quantidade de abas e caso o limite seja menor 
-         //$limit = $menu->getLink()=='faleconosco' ? 
-         
-         $j = 0;
-         
-         for($i=0; $i < count($menu) ;$i++){
-             //if para exibir apenas os menus que são aba
-             if($menu[$i]->getLink()=='faleconosco' || $menu[$i]->getLink()=='editarusu'||
-                $menu[$i]->getLink()=='deletarusu' || $menu[$i]->getLink()=='setor'||
-                $menu[$i]->getLink()=='index' || $menu[$i]->getLink()=='usuario'||
-                $menu[$i]->getLink()=='cadastrarusu'||$menu[$i]->getLink()=='editarsetor'||     
-                $menu[$i]->getLink()=='cadastrarsetor'||$menu[$i]->getLink()=='deletarsetor'||
-                $menu[$i]->getLink()=='material'||$menu[$i]->getLink()=='requisicao'||
-                $menu[$i]->getLink()=='cadastrarmaterial'||$menu[$i]->getLink()=='cadastrarrequisicao'||
-                $menu[$i]->getLink()=='deletarmaterial'||$menu[$i]->getLink()=='deletarrequisicao'||
-                $menu[$i]->getLink()=='editarmaterial'||$menu[$i]->getLink()=='editarrequisicao'
-
-                 ){
-             
-             }
-            else {
-             if($menu[$i]->getLink()=='minhaarea'){
-                 $minhaArea = $menu[$i];
-             } 
-             else if($menu[$i]->getLink()== 'logoff'){
-                 $sair = $menu[$i];
-             }
-             else{
-                 $menulimitado[$j] = $menu[$i];
-                 $j++;
-             }
-            
-            }           
-         }
-         $menulimitado[$j] = $minhaArea;//define penultima posição do menu para o menu $minhaArea
-         $j++;
-         $menulimitado[$j] = $sair;//define ultima posição do menu para o menu $sair
-         //print_r($menulimitado);
-         $this->res = $menulimitado;
-           
-          
-        }
        
-        else{
-         //echo 'logado = false';
-         $menuNome = array('Entrar','Quem somos','Fale conosco');
-         $menuLink = array('index','quemsomos','faleconosco');
-         $menu = array();
-         // print_r($menuNome);
-         for($i=0; $i < count($menuNome);$i++){
-             $m = new menuClass();
-             $m->setIdmenu($i);
-             $m->setNome($menuNome[$i]);
-             $m->setLink($menuLink[$i]);
-            
-             $menu[$i]= $m;
-             
-         }         
-               
-         $this->res = $menu;
-        }
          
+         
+         if(isset($_SESSION['session']['logado'])){
+             #echo 'usuario logado!';   
+         $permissoes_menu = $_SESSION['session']['logado']['permissao']['menu'];
+         #$permissoes_action = $_SESSION['session']['logado']['permissao']['action'];          
+         #var_dump($permissoes_menu);
+         #var_dump($permissoes_action); 
+         $this->res = $permissoes_menu;
+         }
+         else{
+             #echo 'usuario off!';
+             
+
+            $this->res = array(
+                            array(array('nome'=>'Entrar','link'=>'index')),
+                            array(array('nome'=>'Quem somos','link'=>'quemsomos')),
+                            array(array('nome'=>'Fale conosco','link'=>'faleconosco'))
+                                  
+                               );
+         }
+         
+         #var_dump($menus);// $array[0][][nome ou ]
+        
+         
+    }
+    
+    public function varr(){
+        
     }
 
     //RELACIONADO AO MENU OFFLINE
     public function index(){
-        //$this->carregaMenu(); 
+        //titulo da pagina
+        $this->atr_page['titulo'] = 'AlmoXerife: Login';	
+        //classe do controle 
+        $this->atr_page['control'] = 'menu/';
+        
+        $this->res[] = $this->atr_page;
+        
        $this->view('inicio', $this->res);  
     }
     public function faleconosco(){
-        //$this->carregaMenu();        
-        $this->view('fale-conosco',  $this->res);    
+        //titulo da pagina
+        $this->atr_page['titulo'] = 'AlmoXerife: Fale conosco';	
+        //classe do controle 
+        $this->atr_page['control'] = 'menu/';
+        
+        $this->res[] = $this->atr_page;
+       
+      $this->view('fale-conosco',  $this->res);    
     }
     public function quemsomos(){
-        //$this->carregaMenu();
-        $this->view('quem-somos',  $this->res);    
+        //titulo da pagina
+        $this->atr_page['titulo'] = 'AlmoXerife: Quem somos';	
+        //classe do controle 
+        $this->atr_page['control'] = 'menu/';
+        
+        $this->res[] = $this->atr_page;
+
+       $this->view('quem-somos',  $this->res);    
     }
   
    
@@ -136,53 +109,129 @@ class menu extends controller {
     
     //MENU PARA GERENCIAR MATERIAL E REQUISIÇÕES
     public function requisicoes(){
+        //titulo da pagina
+        $this->atr_page['titulo'] = 'AlmoXerife: Requisições';	
+        //classe do controle 
+        $this->atr_page['control'] = 'menu/';
+        
+        $this->res[] = $this->atr_page;
        $this->view('requisicoes',  $this->res);
     }
     
     
     //MENU PARA GERENCIAR SETOR E USUARIO
     public function cliente(){
-        //$this->carregaMenu();
-        $this->view('clientes',  $this->res);
+        //titulo da pagina
+        $this->atr_page['titulo'] = 'AlmoXerife: Clientes';	
+        //classe do controle 
+        $this->atr_page['control'] = 'menu/';
+        
+        $this->res[] =$this->atr_page;       
+
+       $this->view('clientes',  $this->res);
     }
     
    
     //RELACIONADO AO USUÁRIO
     public function usuario(){//página de listagem de usuários
+        //titulo da pagina
+        $this->atr_page['titulo'] = 'AlmoXerife: Usuário';	
+        //classe do controle 
+        $this->atr_page['control'] = 'menu/';
+        //carrega usuarios
+        $this->atr_page['usuarios'] = crud::consultar(array('login','nome',
+            '(SELECT nome FROM setor WHERE idsetor = setor_idsetor) as setor','idusuario'),'usuario'); 
+        //carrega setores
+        $this->atr_page['setores'] =  crud::consultar(array('*'), 'setor');
+        //carrega menus e actions
+        $this->atr_page['menus_actions'] = crud::consultar(array('*'),'menu');
+
+        
+        $this->res[] =$this->atr_page;    
+        
         $this->view('usuarios', $this->res);
     }
-    public function cadastrarusu(){//página para cadastro de usuário
-        $this->view('cadastrarusu', $this->res);
-    }
-    public function editarusu(){//página para edição de usuário 
+    public function editarusuario($id){//página para edição de usuário 
+        
+        //titulo da pagina    
+        $this->atr_page['titulo'] =  'AlmoXerife: Editar Usuário';
+        //classe do controle 
+        $this->atr_page['control'] =  'menu/';
+        //carrega usuario
+        $this->atr_page['usuario'] =  crud::consultar(array('login','nome',
+            '(SELECT nome FROM setor WHERE idsetor=setor_idsetor)as setor',
+            'tipousuario_idtipousuario as tipo','idusuario'), 'usuario',"idusuario='{$id[0]['valor']}'");
+        //carrega menus e actions
+        $this->atr_page['menus_actions'] = crud::consultar(array('*'), 'menu'); 
+        
+        //carrega permissoes atribuidas ao usuario        
+        $this->atr_page['permissoes'] = crud::consultar(array('menu_idmenu as idmenu',
+            'usuario_idusuario as idusuario'),'permissao',"usuario_idusuario={$id[0]['valor']}");
+        
+            
+            
+        $this->res[] = $this->atr_page;
         $this->view('alterarusu', $this->res);
     }
     //USUÁRIO ATUAL
     public function minhaarea(){
+      
+        //titulo da pagina    
+        $this->atr_page['titulo'] =  'AlmoXerife: Minha área';
+        //classe do controle 
+        $this->atr_page['control'] =  'menu/';
+   
+        $this->res[] = $this->atr_page;
         //$this->carregaMenu();
-        $this->view('minha-area',  $this->res);
+       
+     $this->view('minha-area',  $this->res);
     }
     
     
     //RELACIONADO AO SETOR
     public function setor(){
+        //titulo da pagina    
+        $this->atr_page['titulo'] =  'AlmoXerife:  Setor';
+        //classe do controle 
+        $this->atr_page['control'] =  'menu/';
+        
+        $this->atr_page['setores'] =  crud::consultar(array('*'), 'setor');
+        
+        $this->res[] = $this->atr_page;
+        
         $this->view('setores', $this->res);
     }
-    public function cadastrarsetor(){
-        $this->view('cadastrarsetor', $this->res);
-    }
-    public function editarsetor(){
+   
+    public function editarsetor($id){
+       
+        //titulo da pagina    
+        $this->atr_page['titulo'] =  'AlmoXerife: Editar Setor';
+        //classe do controle 
+        $this->atr_page['control'] =  'menu/';
+        
+        $this->atr_page['setor'] =  crud::consultar(array('*'), 'setor',"idsetor='{$id[0]['valor']}'");
+        
+        $this->res[] = $this->atr_page;
         $this->view('alterarsetor',  $this->res);
     }
-    
-    
+    //RELATÓRIO
+    public function relatorio(){
+        //titulo da pagina    
+        $this->atr_page['titulo'] =  'AlmoXerife: Relatório';
+        //classe do controle 
+        $this->atr_page['control'] =  'menu/';
+        
+        $this->res[] = $this->atr_page;
+        $this->view('relatorio',  $this->res);
+    }
+
+
     //ENCERRA CONEXÃO        
     public function logoff(){
-        session_start();
-        session_unset('session');
-        
-        $_SESSION['erro'] = 'Logoff realizado com sucesso!';
-        redirecionar('?action=index');
+
+        stopSession();        
+        $_SESSION['msg'] = 'Logoff realizado com sucesso!';
+        redirecionar();
     }
 }
 

@@ -1,57 +1,19 @@
 <?php if(!defined('BASEPATH')) exit('Falha no carregamento do BASEPATH!');
-  //Ativa o Buffer que armazena o conteúdo principal da página
-seguranca_arq();  
-ob_start();
-session_cache_expire(0.1);
-session_start();
-
-require_once (BASEMODEL.'conexaoBD.php');
-require_once (BASEMODELDAO.'setorDAO.php');
-
-if(!isset($_SESSION['session']['acoes']['idsetor'])){
-      redirecionar('?action=setor');
-}
-
- if(isset($_REQUEST['alterarN'])){//validação de formulário para alterar nome do setor
-          if(isset($_REQUEST['newname'])&& $_REQUEST['newname']!= NULL){//valida se o campo nome para editar foi informado
-              $control = 'setor';//controle no qual tem os metodos para setor
-              $action = 'alterarnome';//ação
-              
-              $_vals = array(   'idsetor' => $_SESSION['session']['acoes']['idsetor'],
-                                'newname' => $_REQUEST['newname']);
-              $_SESSION['session']['acoes'] = $_vals;
-              redirecionar("?control={$control}&action={$action}");
-            } 
-          else{
-                $_SESSION['session']['acoes']['msg'] = 'O novo nome não foi informado!';
-          }  
-    } 
- if(isset($_REQUEST['alterarC'])){//validação de formulário para alterar controle
-          if(isset($_REQUEST['newcod'])&& $_REQUEST['newcod']!= NULL){//valida se o campo codigo para editar foi informado
-              $control = 'setor';//controle no qual tem os metodos para setor
-              $action = 'alterarcodigo';//ação
-              
-              $_vals = array(   'idsetor'=> $_SESSION['session']['acoes']['idsetor'], 
-                                'newcod' => $_REQUEST['newcod']);
-              $_SESSION['session']['acoes'] = $_vals;
-              redirecionar("?control={$control}&action={$action}");
-            } 
-          else{
-                $_SESSION['session']['acoes']['msg'] = 'O novo código não foi informado!';
-          } 
-    } 
-
+#seguranca_arq();  
 ?>
 <!--
         Início de Conteúdo
 -->
 <?php 
-                        $set = $_SESSION['session']['acoes']['idsetor'];
-                        
-                        $setor = new setorDAO();
-                        $ret = $setor->ObterPorPK($set);
-                       
+         foreach ($val as $array) {
+           foreach ($array as $key => $value) {
+                   if( $key == 'setor'   ){   $setor = ($value);   
+                   break;
+                   }
+           }         
+         }     
 ?>
+
 <div class="modulo">
 <h3>Editar setor</h3>	
 	
@@ -59,40 +21,30 @@ if(!isset($_SESSION['session']['acoes']['idsetor'])){
 			<strong>Dados do setor</strong><br />
 		</p>
 <p>
-    <strong>Nome atual:</strong><?=$ret->getNome() ?>
+    <strong>Nome atual:</strong><?=$setor[0]['nome'] ?>
 </p>
 <p>
-    <strong>Código atual:</strong><?=$ret->getCodigo() ?>
+    <strong>Código atual:</strong><?=$setor[0]['codigo'] ?>
 </p>
-<form method="POST">
+<form method="POST" action="<?=BARRA.url_base?>/setor/alterarnomesetor/idsetor/<?=$setor[0]['idsetor']?>">
     <p> 
         <strong>Novo nome:</strong><br>
-        <input type="text" name="newname">
+        <input type="text" name="newname" required="required">
     </p>
     <p>
-        <input type="submit" name="alterarN" value="Alterar nome">
+        <input type="submit" onclick="return confirm('Deseja realmente alterar o nome do setor?');" name="alterarN" value="Alterar nome">
     </p>
 </form>
-<form method="POST">
+<form method="POST" action="<?=BARRA.url_base?>/setor/alterarcodigosetor/idsetor/<?=$setor[0]['idsetor']?>">
     <p>
         <strong>Novo código:</strong><br>
-        <input type="text" name="newcod">
+        <input type="text" name="newcodigo" required="required">
     </p>
     <p>
-        <input type="submit" name="alterarC" value="Alterar código">
+        <input type="submit" onclick="return confirm('Deseja realmente alterar o código do setor?');" name="alterarC" value="Alterar código">
     </p>
 </form>
 </div>
 <!--
         Fim de Conteúdo
 -->
-<?php
-   // titulo pagina
-   $titulo_page = 'AlmoXerife: Editar setor';
-   // page recebe o conteudo do buffer
-   $conteudo = ob_get_contents(); 
-  
-  // Descarta o conteudo do Buffer
-  ob_end_clean(); 
-  //Include com o Template
-  include_once(BASEVIEWINC."clientes.php");
